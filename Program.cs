@@ -16,7 +16,7 @@ namespace _07_B___poleCELL_piece_STRING
                 hraciDeska.Move();
                 Console.Clear();
                 Console.Write(hraciDeska.ToString());
-            }
+            }   ////// Komntar
         }
     }
 }
