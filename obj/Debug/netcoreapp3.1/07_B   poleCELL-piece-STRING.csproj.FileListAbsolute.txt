@@ -1,0 +1,13 @@
+D:\Petr\UPOL _ APLIKOVANÁ INFORMATIKA\2. ročník\Krajča, Kuhr _ Projektový seminář 1 - KMI_YPSI1\Dáma\07_B   poleCELL-piece-STRING\obj\Debug\netcoreapp3.1\07_B   poleCELL-piece-STRING.AssemblyInfoInputs.cache
+D:\Petr\UPOL _ APLIKOVANÁ INFORMATIKA\2. ročník\Krajča, Kuhr _ Projektový seminář 1 - KMI_YPSI1\Dáma\07_B   poleCELL-piece-STRING\obj\Debug\netcoreapp3.1\07_B   poleCELL-piece-STRING.AssemblyInfo.cs
+D:\Petr\UPOL _ APLIKOVANÁ INFORMATIKA\2. ročník\Krajča, Kuhr _ Projektový seminář 1 - KMI_YPSI1\Dáma\07_B   poleCELL-piece-STRING\obj\Debug\netcoreapp3.1\07_B   poleCELL-piece-STRING.csproj.CoreCompileInputs.cache
+D:\Petr\UPOL _ APLIKOVANÁ INFORMATIKA\2. ročník\Krajča, Kuhr _ Projektový seminář 1 - KMI_YPSI1\Dáma\07_B   poleCELL-piece-STRING\bin\Debug\netcoreapp3.1\07_B   poleCELL-piece-STRING.exe
+D:\Petr\UPOL _ APLIKOVANÁ INFORMATIKA\2. ročník\Krajča, Kuhr _ Projektový seminář 1 - KMI_YPSI1\Dáma\07_B   poleCELL-piece-STRING\bin\Debug\netcoreapp3.1\07_B   poleCELL-piece-STRING.deps.json
+D:\Petr\UPOL _ APLIKOVANÁ INFORMATIKA\2. ročník\Krajča, Kuhr _ Projektový seminář 1 - KMI_YPSI1\Dáma\07_B   poleCELL-piece-STRING\bin\Debug\netcoreapp3.1\07_B   poleCELL-piece-STRING.runtimeconfig.json
+D:\Petr\UPOL _ APLIKOVANÁ INFORMATIKA\2. ročník\Krajča, Kuhr _ Projektový seminář 1 - KMI_YPSI1\Dáma\07_B   poleCELL-piece-STRING\bin\Debug\netcoreapp3.1\07_B   poleCELL-piece-STRING.runtimeconfig.dev.json
+D:\Petr\UPOL _ APLIKOVANÁ INFORMATIKA\2. ročník\Krajča, Kuhr _ Projektový seminář 1 - KMI_YPSI1\Dáma\07_B   poleCELL-piece-STRING\bin\Debug\netcoreapp3.1\07_B   poleCELL-piece-STRING.dll
+D:\Petr\UPOL _ APLIKOVANÁ INFORMATIKA\2. ročník\Krajča, Kuhr _ Projektový seminář 1 - KMI_YPSI1\Dáma\07_B   poleCELL-piece-STRING\bin\Debug\netcoreapp3.1\07_B   poleCELL-piece-STRING.pdb
+D:\Petr\UPOL _ APLIKOVANÁ INFORMATIKA\2. ročník\Krajča, Kuhr _ Projektový seminář 1 - KMI_YPSI1\Dáma\07_B   poleCELL-piece-STRING\obj\Debug\netcoreapp3.1\07_B   poleCELL-piece-STRING.dll
+D:\Petr\UPOL _ APLIKOVANÁ INFORMATIKA\2. ročník\Krajča, Kuhr _ Projektový seminář 1 - KMI_YPSI1\Dáma\07_B   poleCELL-piece-STRING\obj\Debug\netcoreapp3.1\07_B   poleCELL-piece-STRING.pdb
+D:\Petr\UPOL _ APLIKOVANÁ INFORMATIKA\2. ročník\Krajča, Kuhr _ Projektový seminář 1 - KMI_YPSI1\Dáma\07_B   poleCELL-piece-STRING\obj\Debug\netcoreapp3.1\07_B   poleCELL-piece-STRING.genruntimeconfig.cache
+D:\Petr\UPOL _ APLIKOVANÁ INFORMATIKA\2. ročník\Krajča, Kuhr _ Projektový seminář 1 - KMI_YPSI1\Dáma\07_B   poleCELL-piece-STRING\obj\Debug\netcoreapp3.1\07_B   poleCELL-piece-STRING.csprojAssemblyReference.cache
