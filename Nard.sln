@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "07_B   poleCELL-piece-STRING", "07_B   poleCELL-piece-STRING.csproj", "{F7040B0C-8322-45FC-9D70-FA9F5156A7C7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nard", "Nard.csproj", "{F7040B0C-8322-45FC-9D70-FA9F5156A7C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
