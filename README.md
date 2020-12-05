@@ -40,3 +40,6 @@ uzavřen v rohu dvěma cizími kameny.
 
 [Blueprint](BLUEPRINT.md)
 
+## Tutoriály
+
+[Základy programování v C# (YT tutoriál)](https://www.youtube.com/playlist?list=PLxTqV9i8bnb8tanSMrno74A4tvOF7eIqT)
