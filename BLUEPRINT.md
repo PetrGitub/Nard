@@ -9,12 +9,12 @@
 - hráč
 - tah
 
-### **Board** Hra / Šachovnice
+### Board (Hra / Šachovnice)
 
 #### **Objective**
 Hlavní logika hry. Řídící mechanismus. Teoreticky může být rozděleno do více objektů, např. nějaký render object, který by hrací plochu vykresloval.
 
-#### **Data**
+#### Data
 ```c#
 Player[] players // Hráči
 Player playerOnMove // Hráč na tahu
@@ -22,12 +22,12 @@ Piece selectedPiece // Vybrané políčko
 Move[] moves // Historie tahů
 ```
 
-#### **Constructor**
+#### Constructor
 ```c#
 // 1. Vygenerovat hrací plochu pomocí políček
 ```
 
-#### **Funkce**
+#### Funkce
 ```c#
 // Init (spouštěcí funkce), úvodní nastavení hry
 init() {
@@ -53,41 +53,41 @@ selectPiece() : bool {
 }
 ```
 
-### **Cell** Políčko
+### Cell (Políčko)
 
-#### **Objective**
+#### Objective
 Udržovat **souřadnici** a také **figurku**, pokud se zrovna na poli nachází.
 
-#### **Data**
+#### Data
 ```c#
 Coord coord // Coordinate
 string color // 'black' / 'white'
 ```
 
 
-### **Coord** Koordinát
+### Coord (Koordinát)
 
-#### **Objective**
+#### Objective
 Udržovat hodnoty **x** a **y** souřadnic. Jedná se tedy o data object, (objekt, která nemá žádné funkce, pouze udržuje svou hodnotu).
 
-#### **Data**
+#### Data
 ```c#
 int x
 int y
 ```
 
-### **Piece** Figurka
+### Piece (Figurka)
 
-#### **Objective**
+#### Objective
 S figurkou budeme moct provádět tahy. Figurka náleží **hráči** a má jeho barvu.
 
-#### **Data**
+#### Data
 ```c#
 int x
 int y
 ```
 
-#### **Funkce**
+#### Funkce
 ```c#
 // Tah s figurkou
 // Parametrem je koordinát destinace
@@ -127,12 +127,12 @@ checkPossibleMove(Piece piece, Coord toCoord): bool {
 
 ```
 
-### **Player** Hráč
+### Player (Hráč)
 
-#### **Objective**
+#### Objective
 Udržovat informaci o tom, co je to za **typ** hráče a také zda-li je zrovna na tahu a případně jaké má **skóre**. Dále také na začátku hry rozdělíme **figurky** mezi hráče, bude tedy udržovat i pole svých **figurek**.
 
-#### **Data**
+#### Data
 ```c#
 string type // 'player' / 'computer'
 string color // 'blue' / 'red'
@@ -141,12 +141,12 @@ int score // můžeme a nemusíme implementovat
 ```
 
 
-### **Move** Tah
+### Move (Tah)
 
-#### **Objective**
+#### Objective
 Entita, kterou využijeme do historie tahů. Udržuje pár koordinátů **from** pole x **to** pole y.
 
-#### **Data**
+#### Data
 ```c#
 Coord from // from Coordinate
 Coord to // to Coordinate
