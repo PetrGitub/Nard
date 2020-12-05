@@ -2,7 +2,7 @@
 
 První zmínka o Latrunculi (celým názvem Ludus Latrunculorum) pochází z prvního století před naším letopočtem. Hra je ale pravděpodobně mnohem starší. Jedná se o starořímskou hru, jejím předchůdcem jsou pravděpodobně starořecké hry Petteia a Penta Grammai. Peršané hráli stejnou hru pod názvem Nard. My jí budeme říkat Nard, protože je to kratší a zní to drsně.
 
-![Nard](https://github.com/PetrGitub/Nard/tree/main/docs/hraci_plocha.png "Nard hrací pocha")
+![Nard](docs/hraci_plocha.png "Nard hrací pocha")
 
 _Hrací plocha (obrázek 1)_
 
@@ -32,9 +32,9 @@ uzavřen v rohu dvěma cizími kameny.
 
 ### Dokumenty ke stažení
 
-[Projektový seminář 1 (.docx)](https://github.com/PetrGitub/Nard/tree/main/docs/projektovy_seminar1_informace.docx)
+[Projektový seminář 1 (.docx)](docs/projektovy_seminar1_informace.docx)
 
-[Implementace (.docx)](https://github.com/PetrGitub/Nard/tree/main/docs/implementace_informace_o_vyvoji_programu.docx)
+[Implementace (.docx)](docs/implementace_informace_o_vyvoji_programu.docx)
 
 ## Plán
 
