@@ -36,9 +36,7 @@ uzavřen v rohu dvěma cizími kameny.
 
 [Implementace (.docx)](docs/implementace_informace_o_vyvoji_programu.docx)
 
-## Plán
+## Blueprint
 
-```
-To be written
-```
+[Blueprint](BLUEPRINT.md)
 
