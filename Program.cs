@@ -12,7 +12,6 @@ namespace _07_B___poleCELL_piece_STRING
                 LatrunculiBoard.VypisBoard();
                 LatrunculiBoard.ProvedTah();
                 Console.Clear();
-                // pokus
             }
         }
     }
