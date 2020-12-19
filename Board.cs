@@ -6,147 +6,137 @@ namespace Nard
 {
     class Board
     {
-        public int Size { get; private set; }
-        public Cell[,] Grid;
-        //public Piece Piece { get; set; }
-        public string zprava;
-
-        public Board(int s)
+        private int m = 7, n = 8;
+        private int[,] hracideska = new int[7, 8];
+        public Board()
         {
-            Size = s;
-            Grid = new Cell[Size, Size]; // 'NEW' dokud jsem ho tady nemel, hazelo mi to chybu
-
-            makeGrid();
-            //MakeCoords();
+            NaplnBoard();
+            //ZadejTah();
+            //ProvedTah();
         }
 
-
-        public void makeGrid()
+        // Naplneni matice 
+        public void NaplnBoard()
         {
-            for (int i = 0; i < Size; i++)   /*Obvykle jsou RADKY souřadnice Y a je to vnější smyčka     =>   radky = y; sloupce = x*/
+            for (int i = 0; i < this.hracideska.GetLength(0); i++)
             {
-                for (int j = 0; j < Size; j++)
+                for (int j = 0; j < this.hracideska.GetLength(1); j++)
                 {
-                    Coordinates coord = new Coordinates(i, j);
-                    Grid[i, j] = new Cell(coord);
-
-                    if (i == 0 || i == 1)
+                    if (i <= 1)
                     {
-                        Grid[i, j].pcs = new Piece(coord, Piece.ShapePiece.WhiteStone);
+                        this.hracideska[i, j] = 1;
                     }
-                    else if (i >= Size - 2)
+                    else if (i >= 5)
                     {
-                        Grid[i, j].pcs = new Piece(coord, Piece.ShapePiece.BlackStone);
+                        this.hracideska[i, j] = 2;
                     }
                     else
                     {
-                        Grid[i, j].pcs = new Piece(coord, Piece.ShapePiece.Empty);
+                        this.hracideska[i, j] = 0;
                     }
                 }
             }
         }
 
-
-        public override string ToString()
+        // Vypsani matice
+        public void VypisBoard()
         {
-            string returnStrg = "\n     A  B  C  D  E  F  G  H\n\n";
-            string smallSpace = " ";
-            string Space = "   ";
+            Console.Write("\n    A B C D E F G H\n");
+            //for (int y = 1; y <= Board.GetLength(1); y++)
+            //{
+            //    Console.Write("{0} ", y.ToString());
+            //}
+            //Console.WriteLine();
 
-            for (int y = Size - 1; y >= 0; y--)
+            for (int x = this.hracideska.GetLength(0) - 1; x >= 0; x--)
             {
-                returnStrg = returnStrg + smallSpace;
-                returnStrg += (y + 1).ToString();       /* cisluju radku od horniho, pro ten plati y=7 => 7 + 1 = 8 */
-                returnStrg += Space;
-
-                for (int x = 0; x < Size; x++)
+                Console.Write("{0,3} ", (x + 1).ToString());
+                for (int y = 0; y < this.hracideska.GetLength(1); y++)
                 {
-                    if (Grid[y, x].pcs != null)         /* pokud je na policku(=Cell) nejaka figurka(=pcs) => probehne cyklus plneni do => [1. a 2.radek] */
-                    {                                   /* pokud se dojde ke 3. az 6. radku, tento cyklus je preskocen a do policek(=Cell) se vlozi '0' => radek 81 */
-                        returnStrg = returnStrg + Grid[y, x].pcs.ToString();
-                        if (y >= Size - 2)
-                        {
-                            returnStrg = returnStrg + "  ";/* radky, kde jsou 'x'; overeni, ze to tak skutecne je=> zmenit velikost mezery a uvidim, na kterych radcich se to zmeni*/
-                        }
-                        else if (y == 0 || y == 1)
-                        {
-                            returnStrg = returnStrg + "  "; /* radky, kde jsou 'o' */
-                        }
-                        else
-                        {
-                            returnStrg = returnStrg + "  ";
-                        }
-                    }
-                    else
-                    {
-                        returnStrg += '.'.ToString() + "  ";
-                    }
+                    Console.Write("{0} ", IntToCharacter(this.hracideska[x, y]));
                 }
-                returnStrg += "\n\n";   /* mezera mezi radky */
+                Console.WriteLine();
             }
-            return returnStrg;
+            Console.WriteLine();
         }
 
+        // Převod na string
+        public string IntToCharacter(int value)
+        {
+            switch (value)
+            {
+                case 1:
+                    return "x";
+                case 2:
+                    return "o";
+                default:
+                    return " ";
+            }
+        }
 
-        public int[] EnterCoordsPiece()     /*metoda pro zadávání souřadnic figurky, kterou chci posunout*/
+        // Zadej tah
+        public int[] ZadejTah()
         {
             int chyba = 0;
-            int[] result = new int[2];
             int b;
+            int[] tah = new int[2];
+            int a = 1;
 
             while (chyba > -1)
             {
                 chyba = -1;
 
-                Console.WriteLine("Zadej souřadnice figurky, kterou se má táhnout(ve tvaru A1): ");
-                string zadani = Console.ReadLine();                     /* nactu napsany text do 'zadani' */
-
-                if (zadani.Length == 2 && (zadani[1] < '9'))
+                while (a > 1)
                 {
-                    for (int i = 0; i < 2; i++)
+                    Console.WriteLine("V zadani tahu se objevila nespravna kombinace. Opakujte zadani.\n");
+                    a = 1;
+                }
+
+                Console.WriteLine("Zadej tah ve tvaru: A1 ");
+                string zadani = Console.ReadLine();
+
+                for (int i = 1; i >= 0; i--)
+                {
+
+                    b = (int)zadani[i];
+                    if (!(b < 49 || (55 < b && b < 65) || (72 < b && b < 97) || b > 104 || (zadani[0] > 48 && zadani[0] < 56)
+                        || (!((zadani[1] > 48 && zadani[1] < 56) && zadani.Length == 2))))
                     {
-                        b = (int)zadani[1 - i];
-                        if (!(b < 49 || (56 < b && b < 65) || (72 < b && b < 97) || b > 104 || (zadani[0] > 48 && zadani[0] < 57)))
+                        if (b >= 49 && b <= 55)
                         {
-                            if (b >= 65 && b <= 72)
-                            {
-                                result[i] = b - 65;
-                            }
-                            else if (b >= 49 && b <= 56)
-                            {
-                                result[i] = b - 49;
-                            }
-                            else if (b >= 97 && b <= 104)
-                            {
-                                result[i] = b - 97;
-                            }
+                            tah[1 - i] = b - 49;
+
                         }
-                        else
+                        else if (b >= 65 && b <= 72)
                         {
-                            Console.Write("\tChyba - zadal jsi hodnoty mimo hraci pole.\n");
-                            chyba += 1;
+                            tah[1 - i] = b - 65;
+                        }
+                        else if (b >= 97 && b <= 104)
+                        {
+                            tah[1 - i] = b - 97;
                         }
                     }
-                }
-                else
-                {
-                    Console.Write("\tChyba - zadal jsi vice nez 2 hodnoty nebo nesprávné souřadnice.\n");
-                    chyba += 1;
+                    else
+                    {
+                        chyba += 1;
+                        a += 1;
+                    }
                 }
             }
-            return result;
+            Console.WriteLine();
+            return tah;
         }
 
-        public void Move()
+        public void ProvedTah()
         {
-            int[] Pole1;
-            Pole1 = EnterCoordsPiece();
-            int[] Pole2;
-            Pole2 = EnterCoordsPiece();          /*uložení načtených souřadnic do přechodných Polí*/
+            int[] Odtud;
+            Odtud = ZadejTah();
 
-            Grid[Pole2[0], Pole2[1]].pcs = Grid[Pole1[0], Pole1[1]].pcs; /*souradnice figurky z Pole1 vlozim do souradnic fig. z Pole2 => radek 10 Cell urcuje, ze jde o figurky*/
-            Grid[Pole2[0], Pole2[1]].pcs.NewCoords(Pole2[0], Pole2[1]); /*figurka, ktera je na novych souradnicich ma stale sve puvodni souradnice => vkladam do ni nove souradnice a to souradnice bunky, na kterou prisla*/
-            Grid[Pole1[0], Pole1[1]].pcs = null; /*premazu souradnice odkud vysla figurka na nulu(tzn - tam ted uz nic nestoji)*/
+            int[] Sem;
+            Sem = ZadejTah();
+
+            this.hracideska[Sem[0], Sem[1]] = this.hracideska[Odtud[0], Odtud[1]];
+            this.hracideska[Odtud[0], Odtud[1]] = 0;
         }
     }
 }
