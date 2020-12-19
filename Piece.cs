@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace _07_B___poleCELL_piece_STRING
+namespace Nard
 {
     class Piece
     {

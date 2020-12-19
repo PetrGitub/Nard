@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>_07_B___poleCELL_piece_STRING</RootNamespace>
+    <RootNamespace>Nard</RootNamespace>
   </PropertyGroup>
 
 </Project>
