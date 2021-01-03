@@ -6,13 +6,7 @@ namespace _07_B___poleCELL_piece_STRING
     {
         static void Main(string[] args)
         {
-            Board LatrunculiBoard = new Board();
-            while (true)
-            {
-                LatrunculiBoard.VypisBoard();
-                LatrunculiBoard.ProvedTah();
-                Console.Clear();
-            }
+            MainController mc = new MainController();
         }
     }
 }
