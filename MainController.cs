@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Pokus01_tvorba_sachovnice
+namespace _07_B___poleCELL_piece_STRING
 {
     class MainController
     {
@@ -40,3 +40,6 @@ namespace Pokus01_tvorba_sachovnice
         }
     }
 }
+
+// namespace Pokus01_tvorba_sachovnice
+
