@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace _07_B___poleCELL_piece_STRING
+namespace NARD_01
 {
     class MainController
     {
@@ -18,7 +18,7 @@ namespace _07_B___poleCELL_piece_STRING
 
         public void Game()
         {
-            while(true)
+            while (true)
             {
                 usCom.VypisBoard(Nard);
                 this.ProvedTah();
@@ -40,6 +40,3 @@ namespace _07_B___poleCELL_piece_STRING
         }
     }
 }
-
-// namespace Pokus01_tvorba_sachovnice
-
