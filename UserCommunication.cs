@@ -17,16 +17,16 @@ namespace NARD_01
         }
 
         // Vypsani matice
-        public void VypisBoard(Board favouriteNard)
+        public void VypisBoard(Board currentNard)
         {
             Console.Write("\n    A B C D E F G H\n");
 
-            for (int x = favouriteNard.hracideska.GetLength(0) - 1; x >= 0; x--)
+            for (int x = currentNard.hracideska.GetLength(0) - 1; x >= 0; x--)
             {
                 Console.Write("{0,3} ", (x + 1).ToString());
-                for (int y = 0; y < favouriteNard.hracideska.GetLength(1); y++)
+                for (int y = 0; y < currentNard.hracideska.GetLength(1); y++)
                 {
-                    Console.Write("{0} ", IntToCharacter(favouriteNard.hracideska[x, y]));
+                    Console.Write("{0} ", IntToCharacter(currentNard.hracideska[x, y]));
                 }
                 Console.WriteLine();
             }
@@ -47,6 +47,28 @@ namespace NARD_01
             }
         }
 
+        public int[][] Volba(bool tahneBily)
+        {
+            if(tahneBily)
+            {
+                Console.WriteLine("Bily na tahu");
+            }
+            else
+            {
+                Console.WriteLine("Cerny na tahu");
+            }
+
+            int[][] Vlozeno = new int[2][];
+
+            Console.WriteLine("zadej odkud");
+            Vlozeno[0] = this.ZadejTah();
+
+            Console.WriteLine("zadej kam");
+            Vlozeno[1] = this.ZadejTah();
+
+            return Vlozeno;
+        }
+
         // Zadej tah
         public int[] ZadejTah()
         {
@@ -65,7 +87,7 @@ namespace NARD_01
                     a = 1;
                 }
 
-                Console.WriteLine("Zadej tah ve tvaru: A1 ");
+                //Console.WriteLine("Zadej tah ve tvaru: A1 ");
                 string zadani = Console.ReadLine();
 
                 for (int i = 1; i >= 0; i--)
