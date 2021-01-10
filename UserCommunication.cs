@@ -20,11 +20,6 @@ namespace NARD_01
         public void VypisBoard(Board favouriteNard)
         {
             Console.Write("\n    A B C D E F G H\n");
-            //for (int y = 1; y <= Board.GetLength(1); y++)
-            //{
-            //    Console.Write("{0} ", y.ToString());
-            //}
-            //Console.WriteLine();
 
             for (int x = favouriteNard.hracideska.GetLength(0) - 1; x >= 0; x--)
             {
