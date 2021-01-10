@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace _07_B___poleCELL_piece_STRING
+namespace NARD_01
 {
     class UserCommunication
     {
-       
         public UserCommunication()
         {
 
@@ -84,7 +83,6 @@ namespace _07_B___poleCELL_piece_STRING
                         if (b >= 49 && b <= 55)
                         {
                             tah[1 - i] = b - 49;
-
                         }
                         else if (b >= 65 && b <= 72)
                         {
