@@ -8,6 +8,7 @@ namespace NARD_01
     {
         public Board Nard;
         public UserCommunication usCom;
+        public bool tahneBily = true;           // argument pro Volba( ........ ), r35
 
         public MainController()
         {
@@ -23,17 +24,21 @@ namespace NARD_01
                 usCom.VypisBoard(Nard);
                 this.ProvedTah();
                 usCom.ConsoleClear();
+                this.tahneBily = !tahneBily;    // !true   !false    prepinani bily-cerny
             }
         }
 
         // Provedeni tahu
         public void ProvedTah()
         {
+            int[][] Tah;
+            Tah = usCom.Volba(tahneBily);
+
             int[] Odtud;
-            Odtud = usCom.ZadejTah();
+            Odtud = Tah[0];
 
             int[] Sem;
-            Sem = usCom.ZadejTah();
+            Sem = Tah[1];
 
             Nard.hracideska[Sem[0], Sem[1]] = Nard.hracideska[Odtud[0], Odtud[1]];
             Nard.hracideska[Odtud[0], Odtud[1]] = 0;
