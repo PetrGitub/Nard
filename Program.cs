@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace _07_B___poleCELL_piece_STRING
+namespace Nard
 {
     class Program
     {
@@ -10,3 +10,5 @@ namespace _07_B___poleCELL_piece_STRING
         }
     }
 }
+
+// _07_B___poleCELL_piece_STRING
