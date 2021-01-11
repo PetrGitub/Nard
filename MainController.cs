@@ -34,14 +34,14 @@ namespace NARD_01
             int[][] Tah;
             Tah = usCom.Volba(tahneBily);
 
-            int[] Odtud;
-            Odtud = Tah[0];
+            int[] TahOdkud;
+            TahOdkud = Tah[0];
 
-            int[] Sem;
-            Sem = Tah[1];
+            int[] TahKam;
+            TahKam = Tah[1];
 
-            Nard.hracideska[Sem[0], Sem[1]] = Nard.hracideska[Odtud[0], Odtud[1]];
-            Nard.hracideska[Odtud[0], Odtud[1]] = 0;
+            Nard.hracideska[TahKam[0], TahKam[1]] = Nard.hracideska[TahOdkud[0], TahOdkud[1]];
+            Nard.hracideska[TahOdkud[0], TahOdkud[1]] = 0;
         }
     }
 }
