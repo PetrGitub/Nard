@@ -60,11 +60,11 @@ namespace NARD_01
 
             int[][] Vlozeno = new int[2][];
 
-            Console.WriteLine("zadej odkud");
-            Vlozeno[0] = this.ZadejTah();
+            Console.WriteLine("   Zadej souradnice pole ODKUD chces tahout: ");
+            Vlozeno[0] = this.ZadejTah();                                           // souradnice tahu ODKUD jsou ve Vlozeno[0]
 
-            Console.WriteLine("zadej kam");
-            Vlozeno[1] = this.ZadejTah();
+            Console.WriteLine("   Zadej souradnice pole KAM chces tahout: ");
+            Vlozeno[1] = this.ZadejTah();                                           // souradnice tahu KAM jsou ve Vlozeno[1]
 
             return Vlozeno;
         }
@@ -87,34 +87,40 @@ namespace NARD_01
                     a = 1;
                 }
 
-                //Console.WriteLine("Zadej tah ve tvaru: A1 ");
                 string zadani = Console.ReadLine();
 
-                for (int i = 1; i >= 0; i--)
+                if(zadani.Length == 2)
+                { 
+                    for (int i = 1; i >= 0; i--)
+                    {
+                        b = (int)zadani[i];
+                        if (!(b < 49 || (55 < b && b < 65) || (72 < b && b < 97) || b > 104 || (zadani[0] > 48 && zadani[0] < 56)
+                            || (!((zadani[1] > 48 && zadani[1] < 56)))))
+                        {
+                            if (b >= 49 && b <= 55)
+                            {
+                                tah[1 - i] = b - 49;
+                            }
+                            else if (b >= 65 && b <= 72)
+                            {
+                                tah[1 - i] = b - 65;
+                            }
+                            else if (b >= 97 && b <= 104)
+                            {
+                                tah[1 - i] = b - 97;
+                            }
+                        }
+                        else
+                        {
+                            chyba += 1;
+                            a += 1;
+                        }
+                    }
+                }
+                else
                 {
-
-                    b = (int)zadani[i];
-                    if (!(b < 49 || (55 < b && b < 65) || (72 < b && b < 97) || b > 104 || (zadani[0] > 48 && zadani[0] < 56)
-                        || (!((zadani[1] > 48 && zadani[1] < 56) && zadani.Length == 2))))
-                    {
-                        if (b >= 49 && b <= 55)
-                        {
-                            tah[1 - i] = b - 49;
-                        }
-                        else if (b >= 65 && b <= 72)
-                        {
-                            tah[1 - i] = b - 65;
-                        }
-                        else if (b >= 97 && b <= 104)
-                        {
-                            tah[1 - i] = b - 97;
-                        }
-                    }
-                    else
-                    {
-                        chyba += 1;
-                        a += 1;
-                    }
+                    chyba += 1;
+                    a += 1;
                 }
             }
             Console.WriteLine();
