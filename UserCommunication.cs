@@ -60,10 +60,10 @@ namespace NARD_01
 
             int[][] Vlozeno = new int[2][];
 
-            Console.WriteLine("   Zadej souradnice pole ODKUD chces tahout: ");
+            Console.Write("   Zadej souradnice pole ODKUD chces tahout: ");
             Vlozeno[0] = this.ZadejTah();                                           // souradnice tahu ODKUD jsou ve Vlozeno[0]
 
-            Console.WriteLine("   Zadej souradnice pole KAM chces tahout: ");
+            Console.Write("   Zadej souradnice pole KAM chces tahout: ");
             Vlozeno[1] = this.ZadejTah();                                           // souradnice tahu KAM jsou ve Vlozeno[1]
 
             return Vlozeno;
@@ -80,31 +80,30 @@ namespace NARD_01
             while (chyba > -1)
             {
                 chyba = -1;
-
-                while (a > 1)
-                {
-                    Console.WriteLine("V zadani tahu se objevila nespravna kombinace. Opakujte zadani.\n");
-                    a = 1;
-                }
-
+                //while (a > 1)
+                //{
+                    //a = 1;
+               //}
                 string zadani = Console.ReadLine();
 
                 if(zadani.Length == 2)
-                { 
+                {
+                    zadani = zadani.ToLower();          // z VELKYCH - male
+
                     for (int i = 1; i >= 0; i--)
                     {
                         b = (int)zadani[i];
-                        if (!(b < 49 || (55 < b && b < 65) || (72 < b && b < 97) || b > 104 || (zadani[0] > 48 && zadani[0] < 56)
+                        if (!(b < 49 || (55 < b && b < 97) || b > 104 || (zadani[0] > 48 && zadani[0] < 56)
                             || (!((zadani[1] > 48 && zadani[1] < 56)))))
                         {
                             if (b >= 49 && b <= 55)
                             {
                                 tah[1 - i] = b - 49;
                             }
-                            else if (b >= 65 && b <= 72)
-                            {
-                                tah[1 - i] = b - 65;
-                            }
+                            //else if (b >= 65 && b <= 72)
+                            //{
+                                //tah[1 - i] = b - 65;
+                            //}
                             else if (b >= 97 && b <= 104)
                             {
                                 tah[1 - i] = b - 97;
@@ -113,14 +112,14 @@ namespace NARD_01
                         else
                         {
                             chyba += 1;
-                            a += 1;
+                            Console.WriteLine("V zadani tahu se objevila nespravna kombinace. Opakujte zadani.\n");
                         }
                     }
                 }
                 else
                 {
                     chyba += 1;
-                    a += 1;
+                    Console.WriteLine("V zadani tahu se objevila nespravna kombinace. Opakujte zadani.\n");
                 }
             }
             Console.WriteLine();
