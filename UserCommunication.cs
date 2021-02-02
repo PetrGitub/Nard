@@ -17,16 +17,16 @@ namespace NARD_01
         }
 
         // Vypsani matice
-        public void VypisBoard(Board currentNard)
+        public void VypisBoard(Board favouriteNard)
         {
             Console.Write("\n    A B C D E F G H\n");
 
-            for (int x = currentNard.hracideska.GetLength(0) - 1; x >= 0; x--)
+            for (int x = favouriteNard.hracideska.GetLength(0) - 1; x >= 0; x--)
             {
                 Console.Write("{0,3} ", (x + 1).ToString());
-                for (int y = 0; y < currentNard.hracideska.GetLength(1); y++)
+                for (int y = 0; y < favouriteNard.hracideska.GetLength(1); y++)
                 {
-                    Console.Write("{0} ", IntToCharacter(currentNard.hracideska[x, y]));
+                    Console.Write("{0} ", IntToCharacter(favouriteNard.hracideska[x, y]));
                 }
                 Console.WriteLine();
             }
@@ -49,7 +49,7 @@ namespace NARD_01
 
         public int[][] Volba(bool tahneBily)
         {
-            if(tahneBily)
+            if (tahneBily)
             {
                 Console.WriteLine("Bily na tahu");
             }
@@ -75,18 +75,14 @@ namespace NARD_01
             int chyba = 0;
             int b;
             int[] tah = new int[2];
-            int a = 1;
 
             while (chyba > -1)
             {
                 chyba = -1;
-                //while (a > 1)
-                //{
-                    //a = 1;
-               //}
+                
                 string zadani = Console.ReadLine();
 
-                if(zadani.Length == 2)
+                if (zadani.Length == 2)
                 {
                     zadani = zadani.ToLower();          // z VELKYCH - male
 
@@ -102,7 +98,7 @@ namespace NARD_01
                             }
                             //else if (b >= 65 && b <= 72)
                             //{
-                                //tah[1 - i] = b - 65;
+                            //tah[1 - i] = b - 65;
                             //}
                             else if (b >= 97 && b <= 104)
                             {
