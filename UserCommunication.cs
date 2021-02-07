@@ -47,9 +47,10 @@ namespace NARD_01
             }
         }
 
-        public int[][] Volba(bool tahneBily)
+        // Kdo je na tahu a zadavani souradnic   .......   texty (uvnitr kódu řeším konkrétní tahy - TadejTah)
+        public int[][] Volba(bool tahneBily)        // argument
         {
-            if (tahneBily)
+            if (tahneBily)  // podmínka
             {
                 Console.WriteLine("Bily na tahu");
             }
@@ -120,6 +121,11 @@ namespace NARD_01
             }
             Console.WriteLine();
             return tah;
+        }
+
+        public void VypisZpravu(string anyMessage)
+        {
+            Console.WriteLine(anyMessage);
         }
     }
 }
