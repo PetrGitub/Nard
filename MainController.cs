@@ -43,8 +43,23 @@ namespace NARD_01
             int[] TahKam;
             TahKam = Tah[1];
 
-            Nard.hracideska[TahKam[0], TahKam[1]] = Nard.hracideska[TahOdkud[0], TahOdkud[1]];
-            Nard.hracideska[TahOdkud[0], TahOdkud[1]] = 0;
+
+            int kamen_cil = Nard.hracideska[TahKam[0], TahKam[1]];            // vraci hodnotu (figurky: 1 v 2 v 0), ktera je na policku kam kracim > abych nevstoupil nekam, kde uz nekejaka fugyrka stoji
+            int kamen = Nard.hracideska[TahOdkud[0], TahOdkud[1]];      // vraci hodnotu, ktera je na policku odkud jdu > abych vedel jaka bude hodnota (figurka) tam kam jdu
+            int[] pohyb = { TahOdkud[0], TahOdkud[1], 0, TahKam[0], TahKam[1], kamen }; // A, 2, 0(=policko zustane prazdne] na A, 3, kamen(=jaka figurka se sem premistila: 1 v 2 v 0
+            
+
+            if(gameRules.KontrolaTahu(pohyb, tahneBily, kamen_cil))
+            {
+                Nard.VykonejTah(pohyb);
+            }
+            else                                // pokud tah neprojde KontrolouTahu, tak se vse provede znovu (= od zadani tahu)
+            { 
+                usCom.ConsoleClear();
+                usCom.VypisBoard(Nard);
+                usCom.VypisZpravu("Error");
+                this.ProvedTah();
+            }
         }
     }
 }
