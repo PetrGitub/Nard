@@ -40,14 +40,14 @@ namespace NARD_01
             {
                 case 1:
                     return "x";
-                case 2:
+                case -1:
                     return "o";
                 default:
                     return " ";
             }
         }
 
-        // Kdo je na tahu a zadavani souradnic   .......   texty (uvnitr kódu řeším konkrétní tahy - TadejTah)
+        // Kdo je na tahu a zadavani souradnic   .......   texty (uvnitr kódu řeším konkrétní tahy - ZadejTah)
         public int[][] Volba(bool tahneBily)        // argument
         {
             if (tahneBily)  // podmínka
@@ -75,7 +75,7 @@ namespace NARD_01
         {
             int chyba = 0;
             int b;
-            int[] tah = new int[2];
+            int[] tah_hrace = new int[2];
 
             while (chyba > -1)
             {
@@ -95,7 +95,7 @@ namespace NARD_01
                         {
                             if (b >= 49 && b <= 55)
                             {
-                                tah[1 - i] = b - 49;
+                                tah_hrace[1 - i] = b - 49;
                             }
                             //else if (b >= 65 && b <= 72)
                             //{
@@ -103,7 +103,7 @@ namespace NARD_01
                             //}
                             else if (b >= 97 && b <= 104)
                             {
-                                tah[1 - i] = b - 97;
+                                tah_hrace[1 - i] = b - 97;
                             }
                         }
                         else
@@ -120,12 +120,14 @@ namespace NARD_01
                 }
             }
             Console.WriteLine();
-            return tah;
+            return tah_hrace;
         }
 
         public void VypisZpravu(string anyMessage)
         {
             Console.WriteLine(anyMessage);
         }
+
+
     }
 }
