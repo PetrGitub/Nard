@@ -67,19 +67,6 @@ namespace NARD_01
             usCom.VypisBoard(Nard);
             usCom.VypisZpravu("Error");
             this.ProvedTah();
-
-
-            /*if (gameRules.KontrolaTahu(pohyb, tahneBily == 1, kamen_cil))
-            {
-                Nard.VykonejTah(pohyb);
-            }
-            else                                // pokud tah neprojde KontrolouTahu, tak se vse provede znovu (= od zadani tahu)
-            { 
-                usCom.ConsoleClear();
-                usCom.VypisBoard(Nard);
-                usCom.VypisZpravu("Error");
-                this.ProvedTah();
-            }*/
         }
     }
 }
