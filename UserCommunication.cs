@@ -47,8 +47,19 @@ namespace NARD_01
             }
         }
 
+        public enum Command                 // výčtový Typ
+        {
+            Move,
+            Help,
+            GeneralHelp,
+            Undo,
+            Redo,
+            Load,
+            Save
+        }
+
         // Kdo je na tahu a zadavani souradnic   .......   texty (uvnitr kódu řeším konkrétní tahy - ZadejTah)
-        public int[][] Volba(bool tahneBily)        // argument
+        public Command Volba(bool tahneBily, out int[] Vlozeno_coords)        // argumenty     // pole intu 'Vlozeno_coords' = VYSTUPNI(= out) PARAMETR (tzn., vlozi se do nej souřadnice tahů)
         {
             if (tahneBily)  // podmínka
             {
@@ -59,15 +70,23 @@ namespace NARD_01
                 Console.WriteLine("Cerny na tahu");
             }
 
-            int[][] Vlozeno = new int[2][];
 
+            int[] TahOdkud;                 // pole kam se zadaji souradnice ODKUD jde TAH
+            int[] TahKam;                   // pole kam se zadaji souradnice KAM jde TAH
             Console.Write("   Zadej souradnice pole ODKUD chces tahout: ");
-            Vlozeno[0] = this.ZadejTah();                                           // souradnice tahu ODKUD jsou ve Vlozeno[0]
-
+            TahOdkud = this.ZadejTah();                                           // souradnice tahu ODKUD jsou v TahOdkud
             Console.Write("   Zadej souradnice pole KAM chces tahout: ");
-            Vlozeno[1] = this.ZadejTah();                                           // souradnice tahu KAM jsou ve Vlozeno[1]
+            TahKam = this.ZadejTah();                                           // souradnice tahu KAM jsou v TahKam
 
-            return Vlozeno;
+            Vlozeno_coords = null;
+            if(TahOdkud[0] == 91 || TahKam[0] == 91)
+            {
+                return Command.GeneralHelp;
+            }
+
+            Vlozeno_coords = new int[] { TahOdkud[0], TahOdkud[1], TahKam[0], TahKam[1] };       // souradnice tahů ODKUD a KAM se vloží do "Vlozeno_coords
+
+            return Command.Move;            // navratova hodnota je -----> Command
         }
 
         // Zadej tah
@@ -83,9 +102,14 @@ namespace NARD_01
                 
                 string zadani = Console.ReadLine();
 
-                if (zadani.Length == 2)
+                if (zadani.Length > 0)
                 {
                     zadani = zadani.ToLower();          // z VELKYCH - male
+
+                    if(zadani[0] == '?')
+                    {
+                        return new int[] { 91 };
+                    }
 
                     for (int i = 1; i >= 0; i--)
                     {
@@ -127,7 +151,5 @@ namespace NARD_01
         {
             Console.WriteLine(anyMessage);
         }
-
-
     }
 }
