@@ -26,13 +26,14 @@ namespace NARD_01
         {
             while (true)
             {
+                usCom.ConsoleClear();
                 usCom.VypisBoard(Nard);
                 usCom.VypisZpravu(vypisTahu);
-                while( !UzivatelskeVolby() )
+                while( !UzivatelskeVolby() )            // pokud plati NEGACE TRUE, tzn. nastává false, vypíše se zpráva
                 {
                     usCom.VypisZpravu("  ------->   Error - Tah neni platny ");
                 }
-                usCom.ConsoleClear();
+                //usCom.ConsoleClear();
                 
                 this.tahneBily = -tahneBily;    // !1   !-1    prepinani bily-cerny
             }
@@ -41,7 +42,7 @@ namespace NARD_01
         // Volby: move, help, generalHelp, ondo, redo, load, save
         public bool UzivatelskeVolby()
         {
-            int[] Tah;            // do promenne 'command' se vlozi "return Command.Move"(=táhni)  +  do promenne 'int[][] Tah' se vlozi TAH z "out int[][] Vlozeno_coords"
+            int[] Tah;  // do promenne 'command' se vlozi "return Command.Move"(=táhni) nebo "return Command.GeneralHelp"  +  do promenne 'int[] Tah' se vlozi TAH z "out int[] Vlozeno_coords"  (<--- všechno viz UserCmmunication metoda Volba())
             UserCommunication.Command command = usCom.Volba(tahneBily == 1, out Tah);       // provede se to, co je v podmince metody Volba, ale hodnota(1  V -1) pro tu metodu se vezme tady z r11
             switch( command )
             {
@@ -49,8 +50,9 @@ namespace NARD_01
                     return ProvedTah(Tah);
 
                 case UserCommunication.Command.GeneralHelp:
-                    //usCom.VypisZpravu("Pokusna verze");
-                    Console.WriteLine("hfvnhffi");
+                    //usCom.VypisZpravu("\n GeneralHelp");
+                    Console.WriteLine("blablablablabla");
+                    Console.ReadLine();         // musí to tady být - jinak se hned v dalším kroku vymaže konzole (=ř35) a vykresli nový Board
                     return true;
             }
             return false;
@@ -68,9 +70,9 @@ namespace NARD_01
             TahKam[1] = Tah[3];
 
 
-            int kamen_cil = Nard.hracideska[TahKam[0], TahKam[1]];      // vraci hodnotu (figurky: 1 v 2 v 0), ktera je na policku kam kracim > abych nevstoupil nekam, kde uz nejaka figurka stoji
-            int kamen = Nard.hracideska[TahOdkud[0], TahOdkud[1]];      // vraci hodnotu, ktera je na policku odkud jdu > abych vedel jaka bude hodnota (figurka) tam kam jdu
-            int[] pohyb = { TahOdkud[0], TahOdkud[1], 0, TahKam[0], TahKam[1], kamen }; // A, 2, 0(=policko zustane prazdne] na A, 3, kamen(=jaka figurka se sem premistila: 1 v 2 v 0
+            int kamen_cil = Nard.hracideska[TahKam[0], TahKam[1]];      // vraci hodnotu (figurky: 1 v -1 v 0), ktera je na policku kam kracim => abych nevstoupil nekam, kde uz nejaka figurka stoji
+            int kamen = Nard.hracideska[TahOdkud[0], TahOdkud[1]];      // vraci hodnotu, ktera je na policku odkud jdu => abych vedel jaka bude hodnota (figurka) tam kam jdu
+            int[] pohyb = { TahOdkud[0], TahOdkud[1], 0, TahKam[0], TahKam[1], kamen }; // A, 2, 0(=policko zustane prazdne] na A, 3, kamen(=jaka figurka se sem premistila: 1 v -1 v 0)
 
 
             List<int[]> platneTahy = gameRules.GenerujPlatneTahy(Nard, tahneBily);  // v Seznamu jsou platne tahy pro všechny figurky jedné (aktuální) barvy; před dalším tahem se vyčistí
