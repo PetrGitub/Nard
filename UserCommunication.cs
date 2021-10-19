@@ -61,10 +61,147 @@ namespace NARD_01
             Save
         }
 
-                                                                                                              // VÝSTUP směřuje do: MainController metoda UzivatelskeVolby()
+
+        // Volba - vylepšená verze
+        // VÝSTUP směřuje do: MainController metoda UzivatelskeVolby()
         // Kdo je na tahu a zadavani souradnic   .......   texty (uvnitr kódu řeším konkrétní tahy - ZadejTah)   VÝSTUP této metody: 1."return Command.Move;" (+souřadnice tahu se vloží do: "out int[] Vlozeno_coords"), 2.return "Command.GeneralHelp;" (+"null")
-        public Command Volba(bool tahneBily, out int[] Vlozeno_coords)      // argumenty     // pole intu 'Vlozeno_coords' => VYSTUPNI(= out) PARAMETR (tzn., vlozi se do nej souřadnice tahů => děje se to na r90)
-        {                                                                   
+        public Command Volba(bool tahneBily, out int[] vlozeno_coords)          // argumenty     // pole intu 'Vlozeno_coords' => VYSTUPNI(= out) PARAMETR (tzn., vlozi se do nej souřadnice tahů => děje se to na r??)
+        {
+            if (tahneBily)
+            {
+                Console.WriteLine("Bily na tahu");
+            }
+            else
+            {
+                Console.WriteLine("Cerny na tahu");
+            }
+
+            vlozeno_coords = null;
+
+            int[] TahOdkud;
+            int[] TahKam;
+
+            Console.Write("   Zadej souradnice pole ODKUD chces tahout: ");
+            Command command = ZadejTah(false, out TahOdkud);                    //  TO SE Z TÉ KONZOLE JEN-TAK PŘEČTE???????,    Proč nechybí - console.readline????????,    "false" znamená, že NepřijímáJenSouřadnice na začátku????????
+            if (command == Command.Move)
+            {
+                Console.Write("   Zadej souradnice pole KAM chces tahout: ");
+                ZadejTah(true, out TahKam);                                     //  TO SE Z TÉ KONZOLE JEN-TAK PŘEČTE???????,    Proč nechybí - console.readline????????
+                vlozeno_coords = new int[] { TahOdkud[0], TahOdkud[1], TahKam[0], TahKam[1] };
+                return Command.Move;
+            }
+
+            if (command == Command.Help)
+            {
+                vlozeno_coords = TahOdkud;
+                return Command.Help;
+            }
+            return command;
+        }
+        
+        
+        
+        //Zadej tah
+        public Command ZadejTah(bool prijimamJenSouradnice, out int[] souradnice)
+        {
+            souradnice = null;
+            int x;
+            int y;
+
+            while (true)
+            {
+                string zadaneSouradnice = Console.ReadLine();
+
+                if (zadaneSouradnice.Length == 0)
+                {
+                    Console.WriteLine("Souřadnice nebyly zadány");
+                    continue;                                           // co je za "continue" se už nevykoná a všechno se vrací k "zadaneSouradnice"
+                }
+
+                zadaneSouradnice = zadaneSouradnice.ToLower();
+
+                if ( !prijimamJenSouradnice )           // jestliže nebyly vloženy Souřadnice, ale něco jiného (help, undo, redo, save, load)
+                {
+                    if (zadaneSouradnice == "help")
+                    {
+                        return Command.GeneralHelp;
+                    }
+                    else if (zadaneSouradnice == "undo")
+                    {
+                        return Command.Undo;
+                    }
+                    else if (zadaneSouradnice == "redo")
+                    {
+                        return Command.Redo;
+                    }
+                    else if (zadaneSouradnice == "save")
+                    {
+                        return Command.Save;
+                    }
+                    else if (zadaneSouradnice == "load")
+                    {
+                        return Command.Load;
+                    }
+                }
+
+                try     // vkládání souřadnic
+                {
+                    x = zadaneSouradnice[0];    // Do "x" se nevloží písmeno (např: "b"), ale číslo (např: 98), pokud v tom stringu na pozici 0 je písmeno b. String je totiž pole charů.
+                    if (x < 'a' || 'h' < x)     // To srovnání je pak takto: x < 'a' srovnává hodnotu uloženou v x(98) s číslem 97.                 
+                    {
+                        Console.WriteLine("Chybné zadání souřadnice!");
+                        continue;
+                    }
+                    x = x - 'a';
+
+                    y = zadaneSouradnice[1];
+                    if ( y < '1' || '7' < y )
+                    {
+                        Console.WriteLine("Chybné zadání souřadnice!");
+                        continue;
+                    }
+                    y = y - '1';
+
+                    souradnice = new int[] { x, y };    // načtené hodnoty se vloží do "souradnice"
+
+                    if ( zadaneSouradnice.Contains ( '?' ) && !prijimamJenSouradnice)   // Místo souřadnic (např. b5) lze zadat ( např: b5? ). Pokud to bude obsahovat ten otazník, tak to vrátí Command.Help - tedy žádost o nápovědu tahu pro konkrétní figurku
+                    {
+                        return Command.Help;
+                    }
+
+                    return Command.Move;
+                }
+
+                catch
+                {
+                    Console.WriteLine("Chybné souřadnice nebo neplatný povel!");
+                    continue;
+                }
+            }
+        }
+
+
+
+        public void VypisZpravu(string anyMessage)
+        {
+            Console.WriteLine(anyMessage);
+        }
+
+
+
+
+
+
+
+
+
+
+
+        /*
+        // VÝSTUP směřuje do: MainController metoda UzivatelskeVolby()
+        // Kdo je na tahu a zadavani souradnic   .......   texty (uvnitr kódu řeším konkrétní tahy - ZadejTah)   VÝSTUP této metody: 1."return Command.Move;" (+souřadnice tahu se vloží do: "out int[] Vlozeno_coords"), 2.return "Command.GeneralHelp;" (+"null")
+        public Command Volba(bool tahneBily, out int[] Vlozeno_coords)      // argumenty     // pole intu 'Vlozeno_coords' => VYSTUPNI(= out) PARAMETR (tzn., vlozi se do nej souřadnice tahů => děje se to na r??)
+        {       
             if (tahneBily)  // podmínka
             {
                 Console.WriteLine("Bily na tahu");
@@ -158,10 +295,6 @@ namespace NARD_01
             Console.WriteLine();
             return tah_hrace;
         }
-
-        public void VypisZpravu(string anyMessage)
-        {
-            Console.WriteLine(anyMessage);
-        }
+        */
     }
 }
