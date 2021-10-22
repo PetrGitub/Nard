@@ -52,7 +52,7 @@ namespace NARD_01
                 case UserCommunication.Command.GeneralHelp:
                     //usCom.VypisZpravu("\n GeneralHelp");
                     Console.WriteLine("blablablablabla");
-                    Console.ReadLine();         // musí to tady být - jinak se hned v dalším kroku vymaže konzole (=ř35) a vykresli nový Board
+                    Console.ReadLine();         // musí to tady být - jinak se hned v dalším kroku vymaže konzole (=ř35) a vykresli nový Board    
                     return true;
             }
             return false;
@@ -62,12 +62,12 @@ namespace NARD_01
         public bool ProvedTah(int[] Tah)    // tahy jsou na indexech -> Odkud[0 a 1], Kam[0 a 1]  =======> Tah(A2A3) = Tah[0123]
         {
             int[] TahOdkud = new int[2];    // pole se 2 prvky
-            TahOdkud[0] = Tah[0];
-            TahOdkud[1] = Tah[1];
+            TahOdkud[0] = Tah[1];
+            TahOdkud[1] = Tah[0];
 
             int[] TahKam = new int[2];
-            TahKam[0] = Tah[2];
-            TahKam[1] = Tah[3];
+            TahKam[0] = Tah[3];
+            TahKam[1] = Tah[2];
 
 
             int kamen_cil = Nard.hracideska[TahKam[0], TahKam[1]];      // vraci hodnotu (figurky: 1 v -1 v 0), ktera je na policku kam kracim => abych nevstoupil nekam, kde uz nejaka figurka stoji
