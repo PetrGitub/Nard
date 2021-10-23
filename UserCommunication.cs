@@ -147,7 +147,7 @@ namespace NARD_01
                 try     // vkládání souřadnic
                 {
                     x = zadaneSouradnice[0];    // Do "x" se nevloží písmeno (např: "b"), ale číslo (např: 98), pokud v tom stringu na pozici 0 je písmeno b. String je totiž pole charů.
-                    if (x < 'a' || 'h' < x)     // To srovnání je pak takto: x < 'a' srovnává hodnotu uloženou v x(98) s číslem 97.                 
+                    if (x < 'a' || 'h' < x)     // To srovnání je pak takto: x < 'a' srovnává hodnotu uloženou v x(např: b=98) s číslem 97(=a).                 
                     {
                         Console.WriteLine("Chybné zadání souřadnice!");
                         continue;
@@ -182,9 +182,13 @@ namespace NARD_01
 
 
 
-        public void VypisZpravu(string anyMessage)
+        public void VypisZpravu( string anyMessage, bool cekaNaVstup )
         {
             Console.WriteLine(anyMessage);
+            if  ( cekaNaVstup )
+            {
+                Console.ReadLine();                 // musí to tady být - jinak se hned v dalším kroku vymaže konzole a vykresli nový Board a vlastně není vidět žádná provedená akce
+            }
         }
 
 
