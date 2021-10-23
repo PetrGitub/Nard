@@ -50,8 +50,6 @@ namespace NARD_01
 
                 case UserCommunication.Command.Help:
                     usCom.VypisZpravu("Zvolil jste možnost HELP", true);
-                    //Console.WriteLine("Zvolil jste možnost HELP");
-                    //Console.ReadLine();
                     return true;
 
                 case UserCommunication.Command.GeneralHelp:
