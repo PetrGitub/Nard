@@ -29,7 +29,8 @@ namespace NARD_01
                 usCom.ConsoleClear();
                 usCom.VypisBoard(Nard);
                 usCom.VypisZpravu(vypisTahu, false);        // "false" -> protože tady není žádoucí čekat na Enter (=UserCommunication-VypisZpravu-bool cekaNaVstup)  +  "vypisTahu -> MainController-ProvedTah-VypisTahu
-                while ( !UzivatelskeVolby() )               // pokud plati NEGACE TRUE, tzn. nastává false, vypíše se zpráva
+                bool provedenTah;
+                while ( !UzivatelskeVolby( out provedenTah) )               // pokud plati NEGACE TRUE, tzn. nastává false, vypíše se zpráva
                 {
                     usCom.VypisZpravu("  ------->   Error - Tah neni platny ", false);      // "false" -> protože tady není žádoucí čekat na Enter (=UserCommunication-VypisZpravu-bool cekaNaVstup), .....
                 }                                                                           // .....aby se provedl další krok, tady chci rovnou vypsat tu zprávu                                                                                            
@@ -39,14 +40,16 @@ namespace NARD_01
         }
 
         // Volby: move, help, generalHelp, ondo, redo, load, save
-        public bool UzivatelskeVolby()
+        public bool UzivatelskeVolby( out bool provedenTah)
         {
+            provedenTah = false;
             int[] Tah;  // do promenne 'command' se vlozi "return Command.Move"(=táhni) nebo "return Command.GeneralHelp"  +  do promenne 'int[] Tah' se vlozi TAH z "out int[] Vlozeno_coords"  (<--- všechno viz UserCmmunication metoda Volba())
             UserCommunication.Command command = usCom.Volba(tahneBily == 1, out Tah);       // provede se to, co je v podmince metody Volba, ale hodnota(1  V -1) pro tu metodu se vezme tady z r11
             switch( command )
             {
                 case UserCommunication.Command.Move:
-                    return ProvedTah(Tah);
+                    provedenTah = ProvedTah(Tah);
+                    return provedenTah;
 
                 case UserCommunication.Command.Help:
                     usCom.VypisZpravu("Zvolil jste možnost HELP", true);
