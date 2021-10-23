@@ -49,33 +49,29 @@ namespace NARD_01
                     return ProvedTah(Tah);
 
                 case UserCommunication.Command.Help:
-                    Console.WriteLine("Zvolil jste možnost HELP");
-                    Console.ReadLine();
+                    usCom.VypisZpravu("Zvolil jste možnost HELP", true);
+                    //Console.WriteLine("Zvolil jste možnost HELP");
+                    //Console.ReadLine();
                     return true;
 
                 case UserCommunication.Command.GeneralHelp:
-                    Console.WriteLine("Zadán požadavek o nápovědu všech tahů");
-                    Console.ReadLine();
+                    usCom.VypisZpravu( "Zadán požadavek o nápovědu všech tahů", true );
                     return true;
 
                 case UserCommunication.Command.Undo:
-                    Console.WriteLine("Undo - vrátíte krok zpět");
-                    Console.ReadLine();
+                    usCom.VypisZpravu( "Undo - vrátíte krok zpět", true );
                     return true;
 
                 case UserCommunication.Command.Redo:
-                    Console.WriteLine("Redo - Posunete se o krok vpřed");
-                    Console.ReadLine();
+                    usCom.VypisZpravu( "Redo - Posunete se o krok vpřed", true );
                     return true;
 
                 case UserCommunication.Command.Load:
-                    Console.WriteLine("Nahrát uložený stav - LOAD");
-                    Console.ReadLine();
+                    usCom.VypisZpravu( "Nahrát uložený stav - LOAD", true );
                     return true;
                      
                 case UserCommunication.Command.Save:
-                    Console.WriteLine("Uložit aktuální stav - SAVE");
-                    Console.ReadLine();
+                    usCom.VypisZpravu( "Uložit aktuální stav - SAVE", true );
                     return true;
             }
             return false;
