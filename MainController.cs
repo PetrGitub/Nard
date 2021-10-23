@@ -28,13 +28,12 @@ namespace NARD_01
             {
                 usCom.ConsoleClear();
                 usCom.VypisBoard(Nard);
-                usCom.VypisZpravu(vypisTahu);
-                while( !UzivatelskeVolby() )            // pokud plati NEGACE TRUE, tzn. nastává false, vypíše se zpráva
+                usCom.VypisZpravu(vypisTahu, false);        // "false" -> protože tady není žádoucí čekat na Enter (=UserCommunication-VypisZpravu-bool cekaNaVstup)  +  "vypisTahu -> MainController-ProvedTah-VypisTahu
+                while ( !UzivatelskeVolby() )               // pokud plati NEGACE TRUE, tzn. nastává false, vypíše se zpráva
                 {
-                    usCom.VypisZpravu("  ------->   Error - Tah neni platny ");
-                }
-                //usCom.ConsoleClear();
-                
+                    usCom.VypisZpravu("  ------->   Error - Tah neni platny ", false);      // "false" -> protože tady není žádoucí čekat na Enter (=UserCommunication-VypisZpravu-bool cekaNaVstup), .....
+                }                                                                           // .....aby se provedl další krok, tady chci rovnou vypsat tu zprávu                                                                                            
+
                 this.tahneBily = -tahneBily;    // !1   !-1    prepinani bily-cerny
             }
         }
@@ -49,10 +48,34 @@ namespace NARD_01
                 case UserCommunication.Command.Move:
                     return ProvedTah(Tah);
 
+                case UserCommunication.Command.Help:
+                    Console.WriteLine("Zvolil jste možnost HELP");
+                    Console.ReadLine();
+                    return true;
+
                 case UserCommunication.Command.GeneralHelp:
-                    //usCom.VypisZpravu("\n GeneralHelp");
-                    Console.WriteLine("blablablablabla");
-                    Console.ReadLine();         // musí to tady být - jinak se hned v dalším kroku vymaže konzole (=ř35) a vykresli nový Board    
+                    Console.WriteLine("Zadán požadavek o nápovědu všech tahů");
+                    Console.ReadLine();
+                    return true;
+
+                case UserCommunication.Command.Undo:
+                    Console.WriteLine("Undo - vrátíte krok zpět");
+                    Console.ReadLine();
+                    return true;
+
+                case UserCommunication.Command.Redo:
+                    Console.WriteLine("Redo - Posunete se o krok vpřed");
+                    Console.ReadLine();
+                    return true;
+
+                case UserCommunication.Command.Load:
+                    Console.WriteLine("Nahrát uložený stav - LOAD");
+                    Console.ReadLine();
+                    return true;
+                     
+                case UserCommunication.Command.Save:
+                    Console.WriteLine("Uložit aktuální stav - SAVE");
+                    Console.ReadLine();
                     return true;
             }
             return false;
