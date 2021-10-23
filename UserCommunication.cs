@@ -112,12 +112,17 @@ namespace NARD_01
             {
                 string zadaneSouradnice = Console.ReadLine();
 
+
                 if (zadaneSouradnice.Length == 0)
                 {
                     Console.WriteLine("Souřadnice nebyly zadány");
                     continue;                                           // co je za "continue" se už nevykoná a všechno se vrací k "zadaneSouradnice"
                 }
 
+                if (zadaneSouradnice.Length == 2)
+                {
+
+                
                 zadaneSouradnice = zadaneSouradnice.ToLower();
 
                 if ( !prijimamJenSouradnice )           // jestliže nebyly vloženy Souřadnice, ale něco jiného (help, undo, redo, save, load)
@@ -177,6 +182,9 @@ namespace NARD_01
                     Console.WriteLine("Chybné souřadnice nebo neplatný povel!");
                     continue;
                 }
+                    
+                }
+                Console.WriteLine("Nesprávně zadané souřadnice - zadej pouze písmeno a číslo");
             }
         }
 
