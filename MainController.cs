@@ -40,8 +40,8 @@ namespace NARD_01
         }
 
         // Volby: move, help, generalHelp, ondo, redo, load, save
-        public bool UzivatelskeVolby( out bool provedenTah)
-        {
+        public bool UzivatelskeVolby( out bool provedenTah)     // <----- pomocí výstupního bool parametru( "out bool provedenTah" ) si z metody UzivatelskeVolby vytáhneme informaci o tom, jestli byl proveden tah........
+        {                                                       // ........ ta proměnná bude true pouze, pokud bude skutečně proveden tah  ==> pokud nebyl proveden tah, nezmění se hráč, který je na tahu
             provedenTah = false;
             int[] Tah;  // do promenne 'command' se vlozi "return Command.Move"(=táhni) nebo "return Command.GeneralHelp"  +  do promenne 'int[] Tah' se vlozi TAH z "out int[] Vlozeno_coords"  (<--- všechno viz UserCmmunication metoda Volba())
             UserCommunication.Command command = usCom.Volba(tahneBily == 1, out Tah);       // provede se to, co je v podmince metody Volba, ale hodnota(1  V -1) pro tu metodu se vezme tady z r11
@@ -52,7 +52,7 @@ namespace NARD_01
                     return provedenTah;
 
                 case UserCommunication.Command.Help:
-                    usCom.VypisZpravu("Zvolil jste možnost HELP", true);
+                    usCom.VypisZpravu(string.Format(   "Zvolil jste možnost HELP pro tyto souřadnice: {0} {1}", (char)(Tah[0] + 'A'), (char)(Tah[1] + '1')   ), true);
                     return true;
 
                 case UserCommunication.Command.GeneralHelp:
