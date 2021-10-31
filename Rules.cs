@@ -92,7 +92,7 @@ namespace NARD_01
 
                 if(deska.GetValue(coordX, coordY) == kdoJeNaTahu && deska.GetValue(toX, toY) == 0)  // 1.figurka, kterou hýbu má barvu, která je na tahu,  2.na miste kam jdu nic nestoji
                 {
-                    ZkusZajmoutFigurku(new int[] { coordX, coordY, kdoJeNaTahu, 0, toX, toY, 0, kdoJeNaTahu });  // např.: |X|Y|1|0| |X+1|Y+0|0|1|
+                    ZkusZajmoutFigurku(new int[] { coordX, coordY, kdoJeNaTahu, 0, toX, toY, 0, kdoJeNaTahu }, deska, kdoJeNaTahu);  // např.: |X|Y|1|0| |X+1|Y+0|0|1|
                 }           
             }
         }
