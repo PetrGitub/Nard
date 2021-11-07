@@ -96,11 +96,11 @@ namespace NARD_01
 
 
             List<int[]> platneTahy = gameRules.GenerujPlatneTahy(Nard, tahneBily);  // v Seznamu jsou platne tahy pro všechny figurky jedné (aktuální) barvy; před dalším tahem se vyčistí
-            foreach (int[] vypisPlatneTahy in platneTahy)
+            foreach (int[] aktualniTah in platneTahy)
             {
-                if (vypisPlatneTahy[0] == TahOdkud[0] && vypisPlatneTahy[1] == TahOdkud[1] && vypisPlatneTahy[4] == TahKam[0] && vypisPlatneTahy[5] == TahKam[1])
+                if (aktualniTah[0] == TahOdkud[0] && aktualniTah[1] == TahOdkud[1] && aktualniTah[4] == TahKam[0] && aktualniTah[5] == TahKam[1])
                 {                                                       // pokud jsou v 'platneTahy' ty zadané tahy(jsou definované souřadnicemi), tak se vykonají(VykonejTah)
-                    Nard.VykonejTah(pohyb);
+                    Nard.VykonejTah(aktualniTah);
                     vypisTahu = Convert.ToChar(TahOdkud[1] + 65) + (TahOdkud[0] + 1).ToString() + " → " + Convert.ToChar(TahKam[1] + 65) + (TahKam[0] + 1).ToString();
                                                 // tah se vypiše ...... souřadnice reprezentující písmena se převedou na písmena; čísla zůstanou jen se zvětší o +1, aby odpovídala hodnotám sloupců
                     return true;                // = 'true' pokud se tah provede
