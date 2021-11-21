@@ -8,6 +8,7 @@ namespace NARD_01
     class Rules
     {
         public List<int[]> SeznamPlatnychTahu = new List<int[]>();
+        public int pocetPrazdnychTahu = 0;
 
         public Rules()
         {
@@ -30,7 +31,7 @@ namespace NARD_01
                     {
                         deska.hracideska[i, j] = -1;
                     }
-                    /*else
+                    /*else                              // <------ nemusí být, protože 0 se na prázdná místa vloží automaticky
                     {
                         deska.hracideska[i, j] = 0;
                     }*/
@@ -112,7 +113,7 @@ namespace NARD_01
                 int nextToX = newCoordX + directions[ dir, 1 ];         // nextToX ...... x-ová souřadnice políčka, kde by mohla být figurka soupeře
                 int nextToY = newCoordY + directions[ dir, 0 ];         // nextToX ...... y-ová souřadnice políčka, kde by mohla být figurka soupeře
 
-                if ( !IsValidCoords(nextToX, nextToY))           // KONTROLA, jestli souřadnice, kde by mohla stát soueřova figurka, nejsou mimo desku
+                if ( !IsValidCoords(nextToX, nextToY) )           // KONTROLA, jestli souřadnice, kde by mohla stát soueřova figurka, nejsou mimo desku
                     continue;   // continue = pokud je podmínka true = zastaví se proces a "for" se posune o +1 (pokračuje další iterace)
 
                 int possibleEnemy = deska.GetValue(nextToX, nextToY);   // possibleEnemy = hráč, který NENÍ na tahu  ---->  dostanu vrácenou figurku ( -1, 0, 1 ) stojící na SOUŘADNICÍCH KDE BY MOHL BÝT SOUPEŘ a tu hodnotu vložím do "possibleEnemy"
@@ -139,6 +140,54 @@ namespace NARD_01
         public bool IsValidCoords(int souradniceX, int souradniceY)                                 // metoda vrátí všechny souřadnice na šachovnici => ty validní     ->   jen ty souřadnice, na kterých se hraje
         {
             return souradniceX >= 0 && souradniceX <= 6 && souradniceY >= 0 && souradniceY <= 7;    // použitím této metody se vyloučí možnost dostat se mimo šachovnici
+        }
+
+
+        /// <summary>
+        /// Je konec hry?
+        /// </summary>
+        /// <param name="deska"></param>
+        /// <returns>Hra končí po 30 tazích bez zajmutí figurky NEBO pokud má některá barva 1 nebo 0 figurek</returns>
+        public bool IsGameFinished(Board deska)
+        {
+            if (pocetPrazdnychTahu == 30)
+            {
+                return true;
+            }
+
+            int PocetBilychFigur = 0;
+            int PocetCernychFigur = 0;
+            for (int i = 0; i < deska.hracideska.GetLength(0); i++)
+            {
+                for (int j = 0; j < deska.hracideska.GetLength(1); j++)
+                {
+                    if (deska.hracideska[i, j] == 1)
+                    {
+                        PocetBilychFigur++;
+                    }
+                    else if (deska.hracideska[i, j] == -1)
+                    {
+                        PocetCernychFigur++;
+                    }
+
+                    /*switch(deska.hracideska[i, j])
+                    {
+                        case 1:
+                            PocetBilychFigur++;
+                            break;
+                        case -1:
+                            PocetCernychFigur++;
+                            break;
+                    }*/
+                }
+            }
+            return PocetBilychFigur <= 1 || PocetCernychFigur <= 1;                 //TRUE -----> pokud bílých nebo černých figur je míň než 2
+
+            /*if ( PocetBilychFigur <= 1 || PocetCernychFigur <= 1 )
+            {
+                return true;
+            }                              
+            return false; */       // <------- takto NE!!!!!
         }
     }
 }
