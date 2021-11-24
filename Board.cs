@@ -24,15 +24,15 @@ namespace NARD_01
                 int y = nejakyPohyb[ index + 1 ];
                 int novaHodnotaFigurky;
 
-                if ( tahZpet )
+                if (tahZpet)
                 {
-                    novaHodnotaFigurky = nejakyPohyb[ index + 2 ];        // index2 ukazuje, hodnotu figurky, která na políčko míří (asi 1 nebo -1)
+                    novaHodnotaFigurky = nejakyPohyb[index + 2];        // číslo na INDEXu 2 značí hodnotu políčka na těchto souřadnicích "PŘED ZMĚNOU" 
                 }
-                else 
-                {
-                    novaHodnotaFigurky = nejakyPohyb[ index + 3 ];        // index3 ukazuje, co zůstane na políčku, ze kterého figurka odešla (většinou asi 0)
+                else                                                        // obyčejný tah -> obsahuje 2 čtveřice: Index + 3 v první čtveřici znamená, že figurka zmizela, tedy skutečně 0 ..........
+                {                                                                                       // ........ Index + 3 ve druhé čtveřici ale bude symbolizovat figurku, která se na daném políčku objevila - tedy třeba 1
+                    novaHodnotaFigurky = nejakyPohyb[index + 3];        // číslo na INDEXu 3 značí hodnotu políčka na těchto souřadnicích "PO ZMĚNĚ" 
                 }
-
+                
                 this.hracideska[ x, y ] = novaHodnotaFigurky;
             }
 
@@ -53,6 +53,37 @@ namespace NARD_01
         public void SetValue( int coordX, int coordY, int value )     // metoda vloží hodnotu (figurku: 1  v  -1  v  0), na dané souřadnice
         {
             hracideska[ coordX, coordY ] = value;
+        }
+
+        public void PocetFigur(out int pocetBilychFigur, out int pocetCernychFigur)
+        {
+            pocetBilychFigur = 0;
+            pocetCernychFigur = 0;
+            for (int i = 0; i < hracideska.GetLength(0); i++)
+            {
+                for (int j = 0; j < hracideska.GetLength(1); j++)
+                { 
+                    switch ( hracideska[i, j] )
+                    {
+                        case 1:
+                            pocetBilychFigur++;
+                            break;
+                        case -1:
+                            pocetCernychFigur++;
+                            break;
+                    }
+
+                    /*if (deska.hracideska[i, j] == 1)
+                    {
+                        PocetBilychFigur++;
+                    }
+                    else if (deska.hracideska[i, j] == -1)
+                    {
+                        PocetCernychFigur++;
+                    }*/
+                }
+            }
+            //return pocetBilychFigur <= 1 || pocetCernychFigur <= 1;                 //TRUE -----> pokud bílých nebo černých figur je míň než 2
         }
     }
 }
