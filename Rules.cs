@@ -113,7 +113,7 @@ namespace NARD_01
                 int nextToX = newCoordX + directions[ dir, 1 ];         // nextToX ...... x-ová souřadnice políčka, kde by mohla být figurka soupeře
                 int nextToY = newCoordY + directions[ dir, 0 ];         // nextToX ...... y-ová souřadnice políčka, kde by mohla být figurka soupeře
 
-                if ( !IsValidCoords(nextToX, nextToY) )           // KONTROLA, jestli souřadnice, kde by mohla stát soueřova figurka, nejsou mimo desku
+                if ( !IsValidCoords(nextToX, nextToY) )           // KONTROLA, jestli souřadnice, kde by mohla stát soupeřova figurka, nejsou mimo desku
                     continue;   // continue = pokud je podmínka true = zastaví se proces a "for" se posune o +1 (pokračuje další iterace)
 
                 int possibleEnemy = deska.GetValue(nextToX, nextToY);   // possibleEnemy = hráč, který NENÍ na tahu  ---->  dostanu vrácenou figurku ( -1, 0, 1 ) stojící na SOUŘADNICÍCH KDE BY MOHL BÝT SOUPEŘ a tu hodnotu vložím do "possibleEnemy"
@@ -122,6 +122,9 @@ namespace NARD_01
 
                 int behindNextToX = nextToX + directions[ dir, 1 ];     // v proměnné "behindNextToX" je x-ová souřadnice figurky, která je AŽ ZA POZICÍ kde by mohl být soupeř (=až za "nextToX")
                 int behindNextToY = nextToY + directions[ dir, 0 ];     // v proměnné "behindNextToY" je y-ová souřadnice figurky, která je AŽ ZA POZICÍ kde by mohl být soupeř (=až za "nextToY")
+
+                if ( !IsValidCoords(behindNextToX, behindNextToY))// KONTROLA, jestli souřadnice, kde by mohla stát moje další figurka, nejsou mimo desku
+                    continue;   // continue = pokud je podmínka true = zastaví se proces a "for" se posune o +1 (pokračuje další iterace)
 
                 /* SEM VLOŽÍM ŘEŠENÍ SITUACE V ROHU */
 
@@ -155,12 +158,27 @@ namespace NARD_01
                 return true;
             }
 
-            int PocetBilychFigur = 0;
-            int PocetCernychFigur = 0;
+            deska.PocetFigur(out int pocetBilych, out int pocetCernych); // Hej desko(Board.hraciDeska)! Kolik je na tobě bílých a černých figurek?
+
+            return pocetBilych <= 1 || pocetCernych <= 1;               // vrátí TRUE, když je počet bílých nebo černých <= 1
+
+
+            /*int pocetBilychFigur = 0;
+            int pocetCernychFigur = 0;
             for (int i = 0; i < deska.hracideska.GetLength(0); i++)
             {
                 for (int j = 0; j < deska.hracideska.GetLength(1); j++)
                 {
+                    switch(deska.hracideska[i, j])
+                    {
+                        case 1:
+                            pocetBilychFigur++;
+                            break;
+                        case -1:
+                            pocetCernychFigur++;
+                            break;
+                    }
+
                     if (deska.hracideska[i, j] == 1)
                     {
                         PocetBilychFigur++;
@@ -168,20 +186,10 @@ namespace NARD_01
                     else if (deska.hracideska[i, j] == -1)
                     {
                         PocetCernychFigur++;
-                    }
-
-                    /*switch(deska.hracideska[i, j])
-                    {
-                        case 1:
-                            PocetBilychFigur++;
-                            break;
-                        case -1:
-                            PocetCernychFigur++;
-                            break;
-                    }*/
+                    }    
                 }
-            }
-            return PocetBilychFigur <= 1 || PocetCernychFigur <= 1;                 //TRUE -----> pokud bílých nebo černých figur je míň než 2
+            }               
+           /* return pocetBilychFigur <= 1 || pocetCernychFigur <= 1;             */    //TRUE -----> pokud bílých nebo černých figur je míň než 2
 
             /*if ( PocetBilychFigur <= 1 || PocetCernychFigur <= 1 )
             {
