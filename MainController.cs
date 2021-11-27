@@ -17,13 +17,14 @@ namespace NARD_01
         public ArtificialIntelligence brain;
 
         public string vypisTahu = "";           // vypíše provedený tah;  "" jsou tam proto, aby se vypsal (Vytvoří se jen prázdné místo) hned při prvním průchodu, kdy ještě žádný tah není
+        private int hloubka;                    // bude potřeba nejdříve se dotázat na hloubku, aby se nevkládala na začátku 0
 
         public MainController()
         {
             Nard = new Board();
             usCom = new UserCommunication();
             gameRules = new Rules();
-            brain = new ArtificialIntelligence();
+            brain = new ArtificialIntelligence(Nard, hloubka, hracNaTahu);  // bude potřeba nejdříve se dotázat na hloubku, aby se nevkládala na začátku 0
             gameRules.NaplnBoard(Nard);
             this.Game();
         }
