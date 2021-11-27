@@ -6,14 +6,19 @@ namespace NARD_01
 {
     class ArtificialIntelligence
     {
+        private Board NardAI;
+        private int HloubkaAI;
+        private int HracNaTahuAI;
         private Random nahodnyVyber = new Random();
 
-        public ArtificialIntelligence()
+        public ArtificialIntelligence(Board deska, int hloubka, int kdoJeNaTahu)
         {
-
+            NardAI = deska;
+            HloubkaAI = hloubka;
+            HracNaTahuAI = kdoJeNaTahu;
         }
 
-        public int[] vyberNahodnyTah( List<int[]> seznamTahu )
+        public int[] VyberNahodnyTah( List<int[]> seznamTahu )
         {
             //int nahodnyTah = nahodnyVyber.Next(seznamTahu.Length);
             //int vybranyTah = seznamTahu[nahodnyTah];
