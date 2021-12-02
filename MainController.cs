@@ -92,10 +92,6 @@ namespace NARD_01
                     provedenTah = ProvedTah(Tah);
                     return provedenTah;
 
-                case UserCommunication.Command.Help:
-                    usCom.VypisZpravu(string.Format(   "Zvolil jste možnost HELP pro tyto souřadnice: {0} {1}", (char)(Tah[0] + 'A'), (char)(Tah[1] + '1')   ), true);
-                    return true;
-
                 case UserCommunication.Command.GeneralHelp:
                     usCom.VypisZpravu( "Zadán požadavek o nápovědu všech tahů", true );
                     return true;
