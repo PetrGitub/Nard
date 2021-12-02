@@ -10,7 +10,7 @@ namespace NARD_01
         public Board Nard;                      // mám proměnnou Nard typu Board a ta ukazuje na tridu Board, kdyz vytvorim nejaky objekt te tridy, tak on bude umět vše, co je popsané ve třídě Board
         public UserCommunication usCom;
         public int hracNaTahu = 1;           // argument pro Game( ........ ), r39
-        public int inteligenceBileho = 5;        // nastavení hráče -----> 0.....hraje člověk, > 0 hraje PC, podle toho jak bude číslo daleko od 0 se bude zvedat inteligence
+        public int inteligenceBileho = 0;        // nastavení hráče -----> 0.....hraje člověk, > 0 hraje PC, podle toho jak bude číslo daleko od 0 se bude zvedat inteligence
         public int inteligenceCerneho = 1;        // nastavení hráče
         public bool PC = true;
         public Rules gameRules;
@@ -34,13 +34,13 @@ namespace NARD_01
 
         public void Game()
         {
-            while (true)
+            while ( !gameRules.IsGameFinished(Nard) )
             {
                 usCom.ConsoleClear();
                 usCom.VypisBoard(Nard);
                 usCom.VypisZpravu(vypisTahu, false);        // "false" -> protože tady není žádoucí čekat na Enter (=UserCommunication-VypisZpravu-bool cekaNaVstup)  +  "vypisTahu -> MainController-ProvedTah-VypisTahu
 
-                if ( (hracNaTahu == 1 && inteligenceBileho > 0) || (hracNaTahu == -1 || inteligenceCerneho > 0) )  // inteligence1,2 > 0 ....... hraje PC
+                if ( (hracNaTahu == 1 && inteligenceBileho > 0) || (hracNaTahu == -1 && inteligenceCerneho > 0) )  // inteligence1,2 > 0 ....... hraje PC
                 {
                     Thread.Sleep( 300 );                    // časová prodleva před tahem počítače, aby tahy nebyly moc rychlé
 
@@ -48,15 +48,11 @@ namespace NARD_01
                     brain.VypocitejNejlepsiTah();                                                                                       // ..... spustí se výpočet a výsledek se provede
                     int[] vybranyTah = brain.nejlepsiTah;
 
-                    Nard.VykonejTah(vybranyTah);                                     // vykonam na šachovnici ten ------> vybrany tah
-                    if (vybranyTah.Length > 8)                              // <------- pokud je vybrany tah delší než 8 (indexy 2x_0-3), tak je jisté, že byla zajmutá figurka
-                    {
-                        gameRules.pocetPrazdnychTahu = 0;                   // figurka byla zajmutá ----> pocetPrazdnychTahu se nezvětší, vždycky se vynuluje a počítání prázdných tahů začíná od začátku
-                    }
-                    else
-                        gameRules.pocetPrazdnychTahu++;                     // figurka NEbyla zajmutá ----> pocetPrazdnychTahu se zvětší
+                    Nard.VykonejTah(vybranyTah);                                     // vykonam na šachovnici ten ------> vybrany tah    
 
-                    vypisTahu = Convert.ToChar(vybranyTah[1] + 65) + (vybranyTah[0] + 1).ToString() + " → " + Convert.ToChar(vybranyTah[5] + 65) + (vybranyTah[4] + 1).ToString(); // místo TahOdkud a TahKam musím zadávat indexy "vybranéhoTahu"
+                    vypisTahu = string.Format("{0}{1} → {2}{3}, počet tahů bez zajetí: {4}", (char)(vybranyTah[1] + 'A'), (char)(vybranyTah[0] + '1'), (char)(vybranyTah[5] + 'A'), (char)(vybranyTah[4] + '1'), Nard.PocetTahuBezZajeti());
+
+                    //vypisTahu = Convert.ToChar(vybranyTah[1] + 65) + (vybranyTah[0] + 1).ToString() + " → " + Convert.ToChar(vybranyTah[5] + 65) + (vybranyTah[4] + 1).ToString(); // místo TahOdkud a TahKam musím zadávat indexy "vybranéhoTahu"
                 }                                                                           // tah se vypiše ...... souřadnice reprezentující písmena se převedou na písmena; čísla zůstanou jen se zvětší o +1, aby odpovídala hodnotám sloupců
                 else
                 {
@@ -66,9 +62,20 @@ namespace NARD_01
                         usCom.VypisZpravu("  ------->   Error - Tah neni platny ", false);      // "false" -> protože tady není žádoucí čekat na Enter (=UserCommunication-VypisZpravu-bool cekaNaVstup), .....
                     }                                                                           // .....aby se provedl další krok, tady chci rovnou vypsat tu zprávu  
                 }
-                this.PC = !this.PC;    //   this.PC = -PC
                 this.hracNaTahu = -hracNaTahu;    // !1   !-1    prepinani bily-cerny
             }
+
+            Nard.PocetFigur(out int pocetBilych, out int pocetCernych);
+            if (pocetBilych > pocetCernych)
+            {
+                usCom.VypisZpravu("Hra skončila. Vyhrál BÍLÝ hráč.", true);
+            }
+            else if (pocetCernych > pocetBilych)
+            {
+                usCom.VypisZpravu("Hra skončila. Vyhrál ČERNÝ hráč.", true);
+            }
+            else
+                usCom.VypisZpravu( "Hra skončila remízou.", true );
         }
 
 
@@ -137,15 +144,11 @@ namespace NARD_01
                 if (aktualniTah[0] == TahOdkud[0] && aktualniTah[1] == TahOdkud[1] && aktualniTah[4] == TahKam[0] && aktualniTah[5] == TahKam[1]) // indexy viz -> Rules.cz -> ZkusZajmout Figurku -> ř95
                 {                                                       // pokud jsou v 'platneTahy' ty zadané tahy(jsou definované souřadnicemi), tak se vykonají(VykonejTah)
                     Nard.VykonejTah(aktualniTah);
-                    if (aktualniTah.Length > 8)                         // <------- pokud je vybrany tah delší než 8 (indexy 2x_0-3), tak je jisté, že byla zajmutá figurka
-                    {
-                        gameRules.pocetPrazdnychTahu = 0;               // figurka byla zajmutá ----> pocetPrazdnychTahu se nezvětší, vždycky se vynuluje a počítání prázdných tahů začíná od začátku
-                    }
-                    else
-                        gameRules.pocetPrazdnychTahu++;                 // figurka NEbyla zajmutá ----> pocetPrazdnychTahu se zvětší
 
-                    vypisTahu = Convert.ToChar(TahOdkud[1] + 65) + (TahOdkud[0] + 1).ToString() + " → " + Convert.ToChar(TahKam[1] + 65) + (TahKam[0] + 1).ToString();
-                                                // tah se vypiše ...... souřadnice reprezentující písmena se převedou na písmena; čísla zůstanou jen se zvětší o +1, aby odpovídala hodnotám sloupců
+                    vypisTahu = string.Format("{0}{1} → {2}{3}, počet tahů bez zajetí: {4}", (char)(TahOdkud[1] + 'A'), (char)(TahOdkud[0] + '1'), (char)(TahKam[1] + 'A'), (char)(TahKam[0] + '1'), Nard.PocetTahuBezZajeti());
+
+                    //vypisTahu = Convert.ToChar(TahOdkud[1] + 65) + (TahOdkud[0] + 1).ToString() + " → " + Convert.ToChar(TahKam[1] + 65) + (TahKam[0] + 1).ToString();
+                    // tah se vypiše ...... souřadnice reprezentující písmena se převedou na písmena; čísla zůstanou jen se zvětší o +1, aby odpovídala hodnotám sloupců
                     return true;                // = 'true' pokud se tah provede
                 }
             }
