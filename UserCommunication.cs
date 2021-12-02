@@ -53,7 +53,6 @@ namespace NARD_01
         public enum Command                 // výčtový Typ
         {
             Move,
-            Help,
             GeneralHelp,
             Undo,
             Redo,
@@ -91,11 +90,6 @@ namespace NARD_01
                 return Command.Move;
             }
 
-            if (command == Command.Help)
-            {
-                vlozeno_coords = TahOdkud;
-                return Command.Help;
-            }
             return command;
         }
         
@@ -113,38 +107,40 @@ namespace NARD_01
                 string zadaneSouradnice = Console.ReadLine();
 
 
-                if (zadaneSouradnice.Length == 0)
+                if ( zadaneSouradnice.Length == 0 )
                 {
                     Console.WriteLine("Souřadnice nebyly zadány");
                     continue;                                           // co je za "continue" se už nevykoná a všechno se vrací k "zadaneSouradnice"
                 }
 
-                zadaneSouradnice = zadaneSouradnice.ToLower();
-
-                if ( !prijimamJenSouradnice )           // jestliže nebyly vloženy Souřadnice, ale něco jiného (help, undo, redo, save, load)
+                if (zadaneSouradnice.Length >= 2)
                 {
-                    if (zadaneSouradnice == "help")
+                    zadaneSouradnice = zadaneSouradnice.ToLower();
+
+                    if (!prijimamJenSouradnice)           // jestliže nebyly vloženy Souřadnice, ale něco jiného (help, undo, redo, save, load)
                     {
-                        return Command.GeneralHelp;
-                    }
-                    else if (zadaneSouradnice == "undo")
-                    {
-                        return Command.Undo;
-                    }
-                    else if (zadaneSouradnice == "redo")
-                    {
-                        return Command.Redo;
-                    }
-                    else if (zadaneSouradnice == "save")
-                    {
-                        return Command.Save;
-                    }
-                    else if (zadaneSouradnice == "load")
-                    {
-                        return Command.Load;
+                        if (zadaneSouradnice == "help")
+                        {
+                            return Command.GeneralHelp;
+                        }
+                        else if (zadaneSouradnice == "undo")
+                        {
+                            return Command.Undo;
+                        }
+                        else if (zadaneSouradnice == "redo")
+                        {
+                            return Command.Redo;
+                        }
+                        else if (zadaneSouradnice == "save")
+                        {
+                            return Command.Save;
+                        }
+                        else if (zadaneSouradnice == "load")
+                        {
+                            return Command.Load;
+                        }
                     }
                 }
-
      
                 try     // vkládání souřadnic
                 {
@@ -165,11 +161,6 @@ namespace NARD_01
                     y = y - '1';
 
                     souradnice = new int[] { x, y };    // načtené hodnoty se vloží do "souradnice"
-
-                    if ( zadaneSouradnice.Contains ( '?' ) && !prijimamJenSouradnice)   // Místo souřadnic (např. b5) lze zadat ( např: b5? ). Pokud to bude obsahovat ten otazník, tak to vrátí Command.Help - tedy žádost o nápovědu tahu pro konkrétní figurku
-                    {
-                        return Command.Help;
-                    }
 
                     return Command.Move;
                 }
