@@ -91,6 +91,11 @@ namespace NARD_01
                 return Command.Move;
             }
 
+            if ( command == Command.SetPlayer )     // ....... DOVYSVĚTLIT !!!!!!!!!!!!!
+            {
+                vlozeno_coords = TahOdkud;
+            }
+
             return command;
         }
         
@@ -140,6 +145,40 @@ namespace NARD_01
                         {
                             return Command.Load;
                         }
+                        else if (zadaneSouradnice.Contains("player1"))     // .......... dovysvětlit ??????????
+                        {
+                            try
+                            {
+                                int hodnota = int.Parse(zadaneSouradnice[8].ToString());
+                                if (hodnota < 0 || hodnota > 5)
+                                    throw new Exception();
+
+                                souradnice = new int[] { 1, hodnota };
+                                return Command.SetPlayer;
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Chybně zadaný příkaz pro nastavení hráče. Použij \"player1 [hodnota]\" - např. \"player1 0\"");
+                                continue;
+                            }
+                        }
+                        else if (zadaneSouradnice.Contains("player2"))
+                        {
+                            try
+                            {
+                                int hodnota = int.Parse(zadaneSouradnice[8].ToString());
+                                if (hodnota < 0 || hodnota > 5)
+                                    throw new Exception();
+
+                                souradnice = new int[] { 2, hodnota };
+                                return Command.SetPlayer;
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Chybně zadaný příkaz pro nastavení hráče. Použij \"player2 [hodnota]\" - např. \"player2 0\"");
+                                continue;
+                            }
+                        }       // .....dovysvětlit
                     }
                 }
      
@@ -181,6 +220,7 @@ namespace NARD_01
             Console.WriteLine(anyMessage);
             if  ( cekaNaVstup )
             {
+                Console.WriteLine( "Stiskni ENTER" );
                 Console.ReadLine();                 // musí to tady být - jinak se hned v dalším kroku vymaže konzole a vykresli nový Board a vlastně není vidět žádná provedená akce
             }
         }
