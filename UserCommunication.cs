@@ -119,10 +119,6 @@ namespace NARD_01
                     continue;                                           // co je za "continue" se už nevykoná a všechno se vrací k "zadaneSouradnice"
                 }
 
-                if (zadaneSouradnice.Length == 2)
-                {
-
-                
                 zadaneSouradnice = zadaneSouradnice.ToLower();
 
                 if ( !prijimamJenSouradnice )           // jestliže nebyly vloženy Souřadnice, ale něco jiného (help, undo, redo, save, load)
@@ -149,6 +145,7 @@ namespace NARD_01
                     }
                 }
 
+     
                 try     // vkládání souřadnic
                 {
                     x = zadaneSouradnice[0];    // Do "x" se nevloží písmeno (např: "b"), ale číslo (např: 98), pokud v tom stringu na pozici 0 je písmeno b. String je totiž pole charů.
@@ -182,9 +179,6 @@ namespace NARD_01
                     Console.WriteLine("Chybné souřadnice nebo neplatný povel!");
                     continue;
                 }
-                    
-                }
-                Console.WriteLine("Nesprávně zadané souřadnice - zadej pouze písmeno a číslo");
             }
         }
 
