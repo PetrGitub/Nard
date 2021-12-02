@@ -109,7 +109,8 @@ namespace NARD_01
                     brain = new ArtificialIntelligence( Nard, 5, hracNaTahu );
                     brain.VypocitejNejlepsiTah();
                     int[] vybranyTah = brain.nejlepsiTah;
-                    usCom.VypisZpravu(string.Format("    Nejlepší možný tah je: {0}{1} -> {2}{3}\n", (char)(vybranyTah[1] + 'A'), (char)(vybranyTah[0] + '1'), (char)(vybranyTah[5] + 'A'), (char)(vybranyTah[4] + '1')), false);
+                    usCom.VypisZpravu(string.Format("    Nejlepší možný tah je: {0}{1} -> {2}{3}\n", (char)( vybranyTah[ 1 ] + 'A' ), (char)( vybranyTah[ 0 ] + '1' ), (char)( vybranyTah[ 5 ] + 'A' ), (char)( vybranyTah[ 4 ] + '1' ) ), false );
+                    potlacitChybu = true;
                     return true;
 
                 case UserCommunication.Command.Undo:
