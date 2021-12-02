@@ -50,22 +50,29 @@ namespace NARD_01
 
                     Nard.VykonejTah(vybranyTah);                                     // vykonam na šachovnici ten ------> vybrany tah    
 
-                    vypisTahu = string.Format("{0}{1} → {2}{3}, počet tahů bez zajetí: {4}", (char)(vybranyTah[1] + 'A'), (char)(vybranyTah[0] + '1'), (char)(vybranyTah[5] + 'A'), (char)(vybranyTah[4] + '1'), Nard.PocetTahuBezZajeti());
+                    vypisTahu = string.Format("{0}{1} → {2}{3}, počet tahů bez zajetí: {4}", (char)(vybranyTah[ 1 ] + 'A'), (char)(vybranyTah[ 0 ] + '1'), (char)(vybranyTah[ 5 ] + 'A'), (char)(vybranyTah[ 4 ] + '1'), Nard.PocetTahuBezZajeti());
 
                     //vypisTahu = Convert.ToChar(vybranyTah[1] + 65) + (vybranyTah[0] + 1).ToString() + " → " + Convert.ToChar(vybranyTah[5] + 65) + (vybranyTah[4] + 1).ToString(); // místo TahOdkud a TahKam musím zadávat indexy "vybranéhoTahu"
                     // tah se vypiše ...... souřadnice reprezentující písmena se převedou na písmena; čísla zůstanou jen se zvětší o +1, aby odpovídala hodnotám sloupců
 
-                    hracNaTahu = -hracNaTahu;
+                    hracNaTahu = -hracNaTahu;       // ....... VÝMĚNA HRÁČE NA TAHU ?????????????
                 }
                 else
                 {
                     bool provedenTah;
-                    while (!UzivatelskeVolby(out provedenTah))               // pokud plati NEGACE TRUE, tzn. nastává false, vypíše se zpráva
+                    while ( !UzivatelskeVolby(out provedenTah, out bool potlacitChybu) )               // pokud plati NEGACE TRUE, tzn. nastává false, vypíše se zpráva    // ...... DOVYSVĚTLIT !!!!!!!!!!!!
                     {
-                        usCom.VypisZpravu("  ------->   Error - Tah neni platny ", false);      // "false" -> protože tady není žádoucí čekat na Enter (=UserCommunication-VypisZpravu-bool cekaNaVstup), .....
-                    }                                                                           // .....aby se provedl další krok, tady chci rovnou vypsat tu zprávu  
+                        if ( !potlacitChybu )
+                        {
+                            usCom.VypisZpravu("  ------->   Error - Tah neni platny ", false);      // "false" -> protože tady není žádoucí čekat na Enter (=UserCommunication-VypisZpravu-bool cekaNaVstup), .....
+                                                                                                    // .....aby se provedl další krok, tady chci rovnou vypsat tu zprávu  
+                        }
+                    }                                                                           
+                    if ( provedenTah )
+                    {
+                        hracNaTahu = -hracNaTahu;
+                    }
                 }
-                this.hracNaTahu = -hracNaTahu;    // !1   !-1    prepinani bily-cerny
             }
 
             Nard.PocetFigur(out int pocetBilych, out int pocetCernych);
@@ -84,9 +91,10 @@ namespace NARD_01
 
 
         // Volby: move, help, generalHelp, ondo, redo, load, save
-        public bool UzivatelskeVolby( out bool provedenTah )     // <----- pomocí výstupního bool parametru( "out bool provedenTah" ) si z metody UzivatelskeVolby vytáhneme informaci o tom, jestli byl proveden tah........
+        public bool UzivatelskeVolby( out bool provedenTah, out bool potlacitChybu )     // <----- pomocí výstupního bool parametru( "out bool provedenTah" ) si z metody UzivatelskeVolby vytáhneme informaci o tom, jestli byl proveden tah........
         {                                                       // ........ ta proměnná bude true pouze, pokud bude skutečně proveden tah  ==> pokud nebyl proveden tah, nezmění se hráč, který je na tahu
             provedenTah = false;
+            potlacitChybu = false;       // ......... DOVYSVĚTLIT !!!!!!!!!!!!!!!
             int[] Tah;  // do promenne 'command' se vlozi "return Command.Move"(=táhni) nebo "return Command.GeneralHelp"  +  do promenne 'int[] Tah' se vlozi TAH z "out int[] Vlozeno_coords"  (<--- všechno viz UserCmmunication metoda Volba())
             UserCommunication.Command command = usCom.Volba(hracNaTahu == 1, out Tah);       // provede se to, co je v podmince metody Volba, ale hodnota(1  V -1) pro tu metodu se vezme tady z r11
             switch( command )
@@ -96,7 +104,12 @@ namespace NARD_01
                     return provedenTah;
 
                 case UserCommunication.Command.GeneralHelp:
-                    usCom.VypisZpravu( "Zadán požadavek o nápovědu všech tahů", true );
+                    usCom.VypisZpravu( "\n Zadán požadavek o nápovědu všech tahů", false );     // ....... DOVYSVĚTLIT CELÉ !!!!!!!!!!!!!!!!!
+
+                    brain = new ArtificialIntelligence( Nard, 5, hracNaTahu );
+                    brain.VypocitejNejlepsiTah();
+                    int[] vybranyTah = brain.nejlepsiTah;
+                    usCom.VypisZpravu(string.Format("    Nejlepší možný tah je: {0}{1} -> {2}{3}\n", (char)(vybranyTah[1] + 'A'), (char)(vybranyTah[0] + '1'), (char)(vybranyTah[5] + 'A'), (char)(vybranyTah[4] + '1')), false);
                     return true;
 
                 case UserCommunication.Command.Undo:
