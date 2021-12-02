@@ -8,7 +8,7 @@ namespace NARD_01
     class Rules
     {
         public List<int[]> SeznamPlatnychTahu = new List<int[]>();
-        public int pocetPrazdnychTahu = 0;
+        // public int pocetPrazdnychTahu = 0;
 
         public Rules()
         {
@@ -65,6 +65,7 @@ namespace NARD_01
         }
 
 
+        
         int[,] directions =
         {
             {  0,-1 },  // doleva ===== index[0]
@@ -97,6 +98,7 @@ namespace NARD_01
                 }           
             }
         }
+
 
 
         /// <summary>
@@ -140,6 +142,7 @@ namespace NARD_01
         }
 
 
+
         public bool IsValidCoords(int souradniceX, int souradniceY)                                 // metoda vrátí všechny souřadnice na šachovnici => ty validní     ->   jen ty souřadnice, na kterých se hraje
         {
             return souradniceX >= 0 && souradniceX <= 6 && souradniceY >= 0 && souradniceY <= 7;    // použitím této metody se vyloučí možnost dostat se mimo šachovnici
@@ -153,7 +156,7 @@ namespace NARD_01
         /// <returns>Hra končí po 30 tazích bez zajmutí figurky NEBO pokud má některá barva 1 nebo 0 figurek</returns>
         public bool IsGameFinished(Board deska)
         {
-            if (pocetPrazdnychTahu == 30)
+            if (deska.PocetTahuBezZajeti() == 30)
             {
                 return true;
             }
