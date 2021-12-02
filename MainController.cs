@@ -53,7 +53,10 @@ namespace NARD_01
                     vypisTahu = string.Format("{0}{1} → {2}{3}, počet tahů bez zajetí: {4}", (char)(vybranyTah[1] + 'A'), (char)(vybranyTah[0] + '1'), (char)(vybranyTah[5] + 'A'), (char)(vybranyTah[4] + '1'), Nard.PocetTahuBezZajeti());
 
                     //vypisTahu = Convert.ToChar(vybranyTah[1] + 65) + (vybranyTah[0] + 1).ToString() + " → " + Convert.ToChar(vybranyTah[5] + 65) + (vybranyTah[4] + 1).ToString(); // místo TahOdkud a TahKam musím zadávat indexy "vybranéhoTahu"
-                }                                                                           // tah se vypiše ...... souřadnice reprezentující písmena se převedou na písmena; čísla zůstanou jen se zvětší o +1, aby odpovídala hodnotám sloupců
+                    // tah se vypiše ...... souřadnice reprezentující písmena se převedou na písmena; čísla zůstanou jen se zvětší o +1, aby odpovídala hodnotám sloupců
+
+                    hracNaTahu = -hracNaTahu;
+                }
                 else
                 {
                     bool provedenTah;
@@ -110,6 +113,19 @@ namespace NARD_01
                      
                 case UserCommunication.Command.Save:
                     usCom.VypisZpravu( "Uložit aktuální stav - SAVE", true );
+                    return true;
+
+                case UserCommunication.Command.SetPlayer:                   // .......... DOVYSVĚTLIT !!!!!!!!!
+                    usCom.VypisZpravu( string.Format( "Změna nastavení {0} hráče na hodnotu {1}", Tah[0] == 1 ? "bílého" : "černého", Tah[1] ), true );
+                    switch( Tah[ 0 ])
+                    {
+                        case 1:
+                            inteligenceBileho = Tah[ 1 ];
+                            break;
+                        case 2:
+                            inteligenceCerneho = Tah[ 1 ];
+                            break;
+                    }
                     return true;
             }
             return false;
