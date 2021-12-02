@@ -57,7 +57,8 @@ namespace NARD_01
             Undo,
             Redo,
             Load,
-            Save
+            Save,
+            SetPlayer
         }
 
 
