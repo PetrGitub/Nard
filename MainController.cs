@@ -10,24 +10,27 @@ namespace NARD_01
         public Board Nard;                      // mám proměnnou Nard typu Board a ta ukazuje na tridu Board, kdyz vytvorim nejaky objekt te tridy, tak on bude umět vše, co je popsané ve třídě Board
         public UserCommunication usCom;
         public int hracNaTahu = 1;           // argument pro Game( ........ ), r39
-        public int inteligence1 = 1;        // nastavení hráče -----> 0.....hraje člověk, > 0 hraje PC, podle toho jak bude číslo daleko od 0 se bude zvedat inteligence
-        public int inteligence2 = 1;        // nastavení hráče
+        public int inteligenceBileho = 5;        // nastavení hráče -----> 0.....hraje člověk, > 0 hraje PC, podle toho jak bude číslo daleko od 0 se bude zvedat inteligence
+        public int inteligenceCerneho = 1;        // nastavení hráče
         public bool PC = true;
         public Rules gameRules;
         public ArtificialIntelligence brain;
 
         public string vypisTahu = "";           // vypíše provedený tah;  "" jsou tam proto, aby se vypsal (Vytvoří se jen prázdné místo) hned při prvním průchodu, kdy ještě žádný tah není
-        private int hloubka;                    // bude potřeba nejdříve se dotázat na hloubku, aby se nevkládala na začátku 0
+        // private int hloubka;                    // bude potřeba nejdříve se dotázat na hloubku, aby se nevkládala na začátku 0
+
 
         public MainController()
         {
             Nard = new Board();
             usCom = new UserCommunication();
             gameRules = new Rules();
-            brain = new ArtificialIntelligence(Nard, hloubka, hracNaTahu);  // bude potřeba nejdříve se dotázat na hloubku, aby se nevkládala na začátku 0
+            
             gameRules.NaplnBoard(Nard);
             this.Game();
         }
+
+
 
         public void Game()
         {
@@ -37,14 +40,15 @@ namespace NARD_01
                 usCom.VypisBoard(Nard);
                 usCom.VypisZpravu(vypisTahu, false);        // "false" -> protože tady není žádoucí čekat na Enter (=UserCommunication-VypisZpravu-bool cekaNaVstup)  +  "vypisTahu -> MainController-ProvedTah-VypisTahu
 
-                if ( (inteligence1 == 1 && inteligence1 > 0) || (inteligence2 == -1 || inteligence2 > 0) )  // inteligence1,2 > 0 ....... hraje PC
+                if ( (hracNaTahu == 1 && inteligenceBileho > 0) || (hracNaTahu == -1 || inteligenceCerneho > 0) )  // inteligence1,2 > 0 ....... hraje PC
                 {
                     Thread.Sleep( 300 );                    // časová prodleva před tahem počítače, aby tahy nebyly moc rychlé
 
-                    List<int[]> platneTahy = gameRules.GenerujPlatneTahy(Nard, hracNaTahu);  // vygeneroval jsem si platné tahy
-                    int[] vybranyTah = brain.VyberNahodnyTah(platneTahy);                   // nechám "mozek" náhodně vybrat tah z těch vygenerovaných tahů a uložím si ho do ----->> int[] vybranyTah
+                    brain = new ArtificialIntelligence( Nard, hracNaTahu > 0 ? inteligenceBileho : inteligenceCerneho, hracNaTahu );    // <= pokud je na řade s tahem počítač, vytvoří se nová instance "brain", kde se nastaví inteligence podle toho, jak je daný hráč nastaven.....
+                    brain.VypocitejNejlepsiTah();                                                                                       // ..... spustí se výpočet a výsledek se provede
+                    int[] vybranyTah = brain.nejlepsiTah;
 
-                    Nard.VykonejTah(vybranyTah, false, true);                                     // vykonam na šachovnici ten ------> vybrany tah
+                    Nard.VykonejTah(vybranyTah);                                     // vykonam na šachovnici ten ------> vybrany tah
                     if (vybranyTah.Length > 8)                              // <------- pokud je vybrany tah delší než 8 (indexy 2x_0-3), tak je jisté, že byla zajmutá figurka
                     {
                         gameRules.pocetPrazdnychTahu = 0;                   // figurka byla zajmutá ----> pocetPrazdnychTahu se nezvětší, vždycky se vynuluje a počítání prázdných tahů začíná od začátku
@@ -52,7 +56,7 @@ namespace NARD_01
                     else
                         gameRules.pocetPrazdnychTahu++;                     // figurka NEbyla zajmutá ----> pocetPrazdnychTahu se zvětší
 
-                    vypisTahu = Convert.ToChar(vybranyTah[1] + 65) + (vybranyTah[0] + 1).ToString() + " → " + Convert.ToChar(vybranyTah[4] + 65) + (vybranyTah[5] + 1).ToString(); // místo TahOdkud a TahKam musím zadávat indexy "vybranéhoTahu"
+                    vypisTahu = Convert.ToChar(vybranyTah[1] + 65) + (vybranyTah[0] + 1).ToString() + " → " + Convert.ToChar(vybranyTah[5] + 65) + (vybranyTah[4] + 1).ToString(); // místo TahOdkud a TahKam musím zadávat indexy "vybranéhoTahu"
                 }                                                                           // tah se vypiše ...... souřadnice reprezentující písmena se převedou na písmena; čísla zůstanou jen se zvětší o +1, aby odpovídala hodnotám sloupců
                 else
                 {
@@ -66,6 +70,8 @@ namespace NARD_01
                 this.hracNaTahu = -hracNaTahu;    // !1   !-1    prepinani bily-cerny
             }
         }
+
+
 
         // Volby: move, help, generalHelp, ondo, redo, load, save
         public bool UzivatelskeVolby( out bool provedenTah )     // <----- pomocí výstupního bool parametru( "out bool provedenTah" ) si z metody UzivatelskeVolby vytáhneme informaci o tom, jestli byl proveden tah........
@@ -106,6 +112,8 @@ namespace NARD_01
             return false;
         }
 
+
+
         // Provedeni tahu
         public bool ProvedTah(int[] Tah)    // tahy jsou na indexech -> Odkud[0 a 1], Kam[0 a 1]  =======> Tah(A2A3) = Tah[0123]
         {
@@ -128,7 +136,7 @@ namespace NARD_01
             {
                 if (aktualniTah[0] == TahOdkud[0] && aktualniTah[1] == TahOdkud[1] && aktualniTah[4] == TahKam[0] && aktualniTah[5] == TahKam[1]) // indexy viz -> Rules.cz -> ZkusZajmout Figurku -> ř95
                 {                                                       // pokud jsou v 'platneTahy' ty zadané tahy(jsou definované souřadnicemi), tak se vykonají(VykonejTah)
-                    Nard.VykonejTah(aktualniTah, false, true);
+                    Nard.VykonejTah(aktualniTah);
                     if (aktualniTah.Length > 8)                         // <------- pokud je vybrany tah delší než 8 (indexy 2x_0-3), tak je jisté, že byla zajmutá figurka
                     {
                         gameRules.pocetPrazdnychTahu = 0;               // figurka byla zajmutá ----> pocetPrazdnychTahu se nezvětší, vždycky se vynuluje a počítání prázdných tahů začíná od začátku
