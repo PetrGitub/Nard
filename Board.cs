@@ -98,14 +98,14 @@ namespace NARD_01
         /// <returns> Chci provést tah zpět. Ověřím, jestli neukazuji na 0. Pokud ano, vrátím false a konec. Pokud není 0, tak se ukazatel sníží o jedna a ten tah, na který nově ukazuje, tak se provede</returns>
         public bool TahZpet()       // návratová hodnota BOOL = je možné tah vykonat? => UKAZATEL ukazuje na 0 a zkusím udělat TahZpet (= vrátí se FALSE, nic se nestane)
         {                                                                           //=> UKAZATEL neukazuje na 0 a zkusím udělat TahZpet (= ukazatel se sníží o 1 a ten tah, na který NOVĚ ukazuje se provede)
-            if ( indexSeznamuPriv == 0 )    // pokud UKAZATEL není 0
+            if ( indexSeznamuPriv == 0 )    // pokud UKAZATEL je 0
             {
                 return false;
             }
             else                /*      ověřit, jestli tady bude fungovat ELSE !!!!!!!!!!!      */
             {
                 indexSeznamuPriv--;                                                 // pokud UKAZATEL není 0, tak se sníží o jedna
-                VykonejTahPriv( SeznamTahu[ indexSeznamuPriv ], false, true );      // a ten tah, na který UKAZATEL nově ukazuje, tak se provede;     tzn., ze SeznamTahu se vybere TAH, na který ukazuje UKAZATEL a provede se, tahZpet=false, zapsatDoSeznamuTahu=true
+                VykonejTahPriv( SeznamTahu[ indexSeznamuPriv ], true, false );      // a ten tah, na který UKAZATEL nově ukazuje, tak se provede;     tzn., ze SeznamTahu se vybere TAH, na který ukazuje UKAZATEL a provede se, tahZpet=true, zapsatDoSeznamuTahu=false
                 return true;
             }
             
@@ -119,7 +119,7 @@ namespace NARD_01
         /// <returns></returns>
         public bool TahVpred()      // návratová hodnota BOOL = je možné tah vykonat? => UKAZATEL ukazuje, v historii TAHů, na konec(= poslední tah) a zkusím udělat TahVpred (= vrátí se FALSE, nic se nestane, není kam jít)
         {                                                                           //=> UKAZATEL ukazuje na nějaký TAH, ale v seznamTahu jsou po něm ještě další tahy, tak zkusím udělat TahVpred (= ukazatel se zvýší o 1 a ten tah se provede)
-            if ( indexSeznamuPriv == SeznamTahu.Count )   // pokud UKAZATEL není na konci SeznamuTahu .........
+            if ( indexSeznamuPriv == SeznamTahu.Count )   // pokud UKAZATEL je na konci SeznamuTahu .........
             {
                 return false;
             }
@@ -180,6 +180,27 @@ namespace NARD_01
                 }
             }
             //return pocetBilychFigur <= 1 || pocetCernychFigur <= 1;                 //TRUE -----> pokud bílých nebo černých figur je míň než 2
+        }
+
+
+
+        /// <summary>
+        /// Tahle metoda projde od ukazatele historii tahů a vždy získá přesný výsledek
+        /// </summary>
+        /// <returns></returns>
+        public int PocetTahuBezZajeti()
+        {
+            int count = 0;
+            for ( int index = indexSeznamuPriv - 1; index >= 0; index-- )
+            {
+                if (SeznamTahu[index].Length == 8)
+                {
+                    count++;
+                }
+                else
+                    break;
+            }
+            return count;
         }
     }
 }
