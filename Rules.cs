@@ -17,19 +17,19 @@ namespace NARD_01
 
 
         // Naplneni matice   ----->    na indexy[i,j] se vloží: ( 1  -1   0 )  =====> a to se potom použije v UserCommunication při "VypisBoard"[x,y]
-        public void NaplnBoard(Board deska)
+        public void NaplnBoard( Board deska )
         {
-            for (int i = 0; i < deska.hracideska.GetLength(0); i++)       // this ....... ukazuje na konkretni hraciDesku, protoze jich muze existovat vic             !!!!!   GetLength(0) --> sloupce   a   GetLength(1) --> řádky   !!!!!
+            for ( int i = 0; i < deska.hracideska.GetLength(0); i++ )       // !!!!!   GetLength(0) --> řádky   a   GetLength(1) --> sloupce   !!!!!
             {
-                for (int j = 0; j < deska.hracideska.GetLength(1); j++)
+                for ( int j = 0; j < deska.hracideska.GetLength(1); j++ )
                 {
                     if (i <= 1)
                     {
-                        deska.hracideska[i, j] = 1;
+                        deska.hracideska[ i, j ] = 1;
                     }
                     else if (i >= 5)
                     {
-                        deska.hracideska[i, j] = -1;
+                        deska.hracideska[ i, j ] = -1;
                     }
                     /*else                              // <------ nemusí být, protože 0 se na prázdná místa vloží automaticky
                     {
@@ -47,17 +47,17 @@ namespace NARD_01
         /// <param name="deska"></param>
         /// <param name="kdoJeNaTahu"></param>
         /// <returns></returns>
-        public List<int[]> GenerujPlatneTahy(Board deska, int kdoJeNaTahu)  // metoda vygeneruje všechny platné tahy pro aktuální barvu (tzn. pro "x" nebo "o")
+        public List<int[]> GenerujPlatneTahy( Board deska, int kdoJeNaTahu )  // metoda vygeneruje všechny platné tahy pro aktuální barvu (tzn. pro "x" nebo "o")
         {
             SeznamPlatnychTahu.Clear();
 
             for (int i = 0; i < 7; i++)
             {
                 for (int j = 0; j < 8; j++)
-                {
-                    if(deska.GetValue(i, j) == kdoJeNaTahu)     // pokud je na daných souřadnicích barva( 1  v -1 ), která je na tahu........
+                { 
+                    if( deska.GetValue(i, j) == kdoJeNaTahu )     // pokud je na daných souřadnicích barva( 1  v -1 ), která je na tahu........
                     {
-                        GenerujPlatneTahyProFigurku(i, j, deska, kdoJeNaTahu);      // .......vygeneruju do SeznamuPlatnýchTahů platné tahy figurky na těchto souřadnicích (týká se to všech figurek, které mají barvu, která je na tahu)
+                        GenerujPlatneTahyProFigurku( i, j, deska, kdoJeNaTahu );      // .......vygeneruju do SeznamuPlatnýchTahů platné tahy figurky na těchto souřadnicích (týká se to všech figurek, které mají barvu, která je na tahu)
                     }
                 }
             }
@@ -81,11 +81,11 @@ namespace NARD_01
         /// <param name="coordY"></param>
         /// <param name="deska"></param>
         /// <param name="kdoJeNaTahu"></param>
-        public void GenerujPlatneTahyProFigurku(int coordX, int coordY, Board deska, int kdoJeNaTahu)
+        public void GenerujPlatneTahyProFigurku(int coordX, int coordY, Board deska, int kdoJeNaTahu)       /*   { x=sloupec, y=řádek }    !!!!!!!!!!!!!!   */
         {
             
             for (int dir = 0; dir < 4; dir++)   //procházení 4 směrů ve smyčce ----->   smyčka nastaví hodnoty "x" a "y" ve 4 směrech = doleva, nahoru, doprava, dolu
-            {                   // toX = x-ová souřadnice pole kam kráčím
+            {       // toX = x-ová souřadnice pole kam kráčím
                 int toX = coordX + directions[ dir, 1 ];   // v proměnné "coordX" je x-ová souřadnice figurky;  dir=index směru (např: dir=0 -> {-1,0});  0 a 1=indexy souřadnic v těch směrech, tzn. => directions[{-1,0},0] ta druhá 0 říká, ......
                 int toY = coordY + directions[ dir, 0 ];   // v proměnné "coordY" je y-ová souřadnice figurk-1,0y,0                                                               .......... že si z té závorky vyberu čísli na indexu 0, což je -1
 
@@ -105,7 +105,7 @@ namespace NARD_01
         /// Zajmutí figurky (pokud to je možné)
         /// </summary>
         /// <param name="prvniPohyb"></param>
-        public void ZkusZajmoutFigurku( int[] prvniPohyb, Board deska, int kdoJeNaTahu )
+        public void ZkusZajmoutFigurku( int[] prvniPohyb, Board deska, int kdoJeNaTahu)                     /*   { x=sloupec, y=řádek }    !!!!!!!!!!!!!!   */
         {
             int newCoordX = prvniPohyb[4];                      // <---- odkaz na ..... "toX"               do "newCoordX je vložena x-ová souřadnice políčka, na které figurka táhla (se přesunula)
             int newCoordY = prvniPohyb[5];                      // <---- odkaz na ..... "toY"               do "newCoordX je vložena y-ová souřadnice políčka, na které figurka táhla (se přesunula)
@@ -122,14 +122,62 @@ namespace NARD_01
                 if (possibleEnemy != (-kdoJeNaTahu))        // <----- pokud - kdo NENÍ na tahu(soupeř) NESTOJÍ na souřadnicích kam se koukám - pokračuju  !!!!! ještě jinak: pokud - se vedle mne nenachází nepřítel - jdu prohlédnout další směr !!!!!
                     continue;
 
-                int behindNextToX = nextToX + directions[ dir, 1 ];     // v proměnné "behindNextToX" je x-ová souřadnice figurky, která je AŽ ZA POZICÍ kde by mohl být soupeř (=až za "nextToX")
-                int behindNextToY = nextToY + directions[ dir, 0 ];     // v proměnné "behindNextToY" je y-ová souřadnice figurky, která je AŽ ZA POZICÍ kde by mohl být soupeř (=až za "nextToY")
+                int behindNextToX = nextToX + directions[ dir, 1 ];     // v proměnné "behindNextToX" je x-ová souřadnice figurky, která je AŽ ZA POZICÍ kde by mohl být soupeř (=až za "nextToX") => další figurka hráče na tahu
+                int behindNextToY = nextToY + directions[ dir, 0 ];     // v proměnné "behindNextToY" je y-ová souřadnice figurky, která je AŽ ZA POZICÍ kde by mohl být soupeř (=až za "nextToY") => další figurka hráče na tahu
 
-                if ( !IsValidCoords(behindNextToX, behindNextToY))// KONTROLA, jestli souřadnice, kde by mohla stát moje další figurka, nejsou mimo desku
-                    continue;   // continue = pokud je podmínka true = zastaví se proces a "for" se posune o +1 (pokračuje další iterace)
+                // pokud je v tomto směru KONEC HRACÍ DESKY, prověřím, if jsem v ROHU, kde jsou další PODMÍNKY pro ZAJETÍ
+                if ( !IsValidCoords( behindNextToX, behindNextToY ) )     // KONTROLA, jestli souřadnice, kde by mohla stát moje další figurka, nejsou mimo desku
+                {
+                    // levý dolní roh
+                    if ( nextToX == 0 && nextToY == 0 && dir == 0 )         // hledám soupeře na  ->  souřadnicích LEVÉHO DOLNÍHO rohu + hledám ve směru DOLEVA[dir == 0], ale ten směr je už mimo desku => koukneš se NAHORU 
+                    {
+                        behindNextToX = nextToX + directions[ 1, 1 ];           //  <----- toto je x-ová souřadnice NAHORU
+                        behindNextToY = nextToY + directions[ 1, 0 ];           //  <----- toto je y-ová souřadnice NAHORU
+                    }
+                    if ( nextToX == 0 && nextToY == 0 && dir == 3 )         // hledám soupeře na  ->  souřadnicích LEVÉHO DOLNÍHO rohu + hledám ve směru DOLŮ[dir == 3], ale ten směr je už mimo desku => koukneš se DOPRAVA
+                    {
+                        behindNextToX = nextToX + directions[ 2, 1 ];           //  <----- toto je x-ová souřadnice DOPRAVA
+                        behindNextToY = nextToY + directions[ 2, 0 ];           //  <----- toto je y-ová souřadnice DOPRAVA
+                    }
 
-                /* SEM VLOŽÍM ŘEŠENÍ SITUACE V ROHU */
+                    // pravý dolní roh
+                    if ( nextToX == 7 && nextToY == 0 && dir == 2 )          // hledám soupeře na  ->  souřadnicích PRAVÉHO DOLNÍHO rohu + hledám ve směru DO PRAVA[dir == 2], ale ten směr je už mimo desku => koukneš se NAHORU 
+                    {
+                        behindNextToX = nextToX + directions[ 1, 1 ];
+                        behindNextToY = nextToY + directions[ 1, 0 ];
+                    }
+                    if( nextToX == 7 && nextToY == 0 && dir == 2 )          // hledám soupeře na  ->  souřadnicích PRAVÉHO DOLNÍHO rohu + hledám ve směru DOLŮ[dir == 3], ale ten směr je už mimo desku => koukneš se DOLEVA
+                    {
+                        behindNextToX = nextToX + directions[ 0, 1 ];
+                        behindNextToY = nextToY + directions[ 0, 0 ];
+                    }
 
+                    // pravý horní roh
+                    if ( nextToX == 7 && nextToY == 6 && dir == 2 )          // hledám soupeře na  ->  souřadnicích PRAVÉHO HORNÍHO rohu + hledám ve směru DO PRAVA[dir == 2], ale ten směr je už mimo desku => koukneš se DOLŮ 
+                    {
+                        behindNextToX = nextToX + directions[ 3, 1 ];
+                        behindNextToY = nextToY + directions[ 3, 0 ];
+                    }
+                    if ( nextToX == 7 && nextToY == 6 && dir == 1 )           // hledám soupeře na  ->  souřadnicích PRAVÉHO HORNÍHO rohu + hledám ve směru NAHORU[dir == 1], ale ten směr je už mimo desku => koukneš se DOLEVA
+                    {
+                        behindNextToX = nextToX + directions[ 0, 1 ];
+                        behindNextToY = nextToY + directions[ 0, 0 ];
+                    }
+
+                    // levý horní roh
+                    if ( nextToX == 0 && nextToY == 6 && dir == 0 )          // hledám soupeře na  ->  souřadnicích LEVÉHO HORNÍHO rohu + hledám ve směru DOLEVA[dir == 0], ale ten směr je už mimo desku => koukneš se DOLŮ 
+                    {
+                        behindNextToX = nextToX + directions[ 3, 1 ];
+                        behindNextToY = nextToY + directions[ 3, 0 ];
+                    }
+                    if ( nextToX == 0 && nextToY == 6 && dir == 1 )           // hledám soupeře na  ->  souřadnicích LEVÉHO HORNÍHO rohu +  hledám ve směru NAHORU[dir == 1], ale ten směr je už mimo desku => koukneš se DO PRAVA
+                    {
+                        behindNextToX = nextToX + directions[ 2, 1 ];
+                        behindNextToY = nextToY + directions[ 2, 0 ];
+                    }
+                    else
+                        continue;   // continue = pokud je podmínka true = zastaví se proces a "for" se posune o +1 (pokračuje další iterace)
+                }
 
 
                 if (deska.GetValue( behindNextToX, behindNextToY ) != kdoJeNaTahu)      // pokud - ten kdo JE na tahu nestojí ob jedno pole(=nestojí tam další moje figurka) - pokračuju  ----> ALE pokud - ob jedno pole STOJÍ MOJE DALŠÍ FIGURKA - můžu zajmout soupeře
@@ -154,14 +202,14 @@ namespace NARD_01
         /// </summary>
         /// <param name="deska"></param>
         /// <returns>Hra končí po 30 tazích bez zajmutí figurky NEBO pokud má některá barva 1 nebo 0 figurek</returns>
-        public bool IsGameFinished(Board deska)
+        public bool IsGameFinished( Board deska )
         {
-            if (deska.PocetTahuBezZajeti() == 30)
+            if ( deska.PocetTahuBezZajeti() == 30 )
             {
                 return true;
             }
 
-            deska.PocetFigur(out int pocetBilych, out int pocetCernych); // Hej desko(Board.hraciDeska)! Kolik je na tobě bílých a černých figurek?
+            deska.PocetFigur( out int pocetBilych, out int pocetCernych ); // Hej desko(Board.hraciDeska)! Kolik je na tobě bílých a černých figurek?
 
             return pocetBilych <= 1 || pocetCernych <= 1;               // vrátí TRUE, když je počet bílých nebo černých <= 1
 
