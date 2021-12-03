@@ -22,12 +22,12 @@ namespace NARD_01
         {
             Console.Write("\n    A B C D E F G H\n");
 
-            for (int x = favouriteNard.hracideska.GetLength(0) - 1; x >= 0; x--)                // Ř Á D K Y
+            for (int x = favouriteNard.hracideska.GetLength( 0 ) - 1; x >= 0; x--)                // Ř Á D K Y
             {
                 Console.Write("{0,3} ", (x + 1).ToString());                                                            // {0,3}  =>  {0}=vkládání čísel řádků -> (x + 1) = 7.........        3=odsazení prvního sloupce(7-1) od kraje
-                for (int y = 0; y < favouriteNard.hracideska.GetLength(1); y++)                 // S L O U P C E                   
+                for (int y = 0; y < favouriteNard.hracideska.GetLength( 1 ); y++)                 // S L O U P C E                   
                 {
-                    Console.Write("{0} ", IntToCharacter(favouriteNard.hracideska[x, y]));                              // metoda IntToCharacter prochází souřadnice na "hracideska", dostává: 1   -1    0    a vkládá -> x    o    prázdno
+                    Console.Write( "{0} ", IntToCharacter( favouriteNard.hracideska[ x, y ] ) );                        // metoda IntToCharacter prochází souřadnice na "hracideska", dostává: 1   -1    0    a vkládá -> x    o    prázdno;                        x  =  ŘÁDKY       y  =  SLOUPCE
                 }
                 Console.WriteLine();
             }
@@ -200,7 +200,7 @@ namespace NARD_01
                     }
                     y = y - '1';
 
-                    souradnice = new int[] { x, y };    // načtené hodnoty se vloží do "souradnice"
+                    souradnice = new int[] { x, y };    // načtené hodnoty se vloží do "souradnice"   ve tvaru  =====>  { x=sloupec, y=řádek }    !!!!!!!!!!!!!!
 
                     return Command.Move;
                 }
