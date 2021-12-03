@@ -12,7 +12,7 @@ namespace NARD_01
         public int hracNaTahu = 1;           // argument pro Game( ........ ), r39
         public int inteligenceBileho = 0;        // nastavení hráče -----> 0.....hraje člověk, > 0 hraje PC, podle toho jak bude číslo daleko od 0 se bude zvedat inteligence
         public int inteligenceCerneho = 1;        // nastavení hráče
-        public bool PC = true;
+        
         public Rules gameRules;
         public ArtificialIntelligence brain;
 
@@ -111,7 +111,7 @@ namespace NARD_01
                     int[] vybranyTah = brain.nejlepsiTah;
                     usCom.VypisZpravu(string.Format("    Nejlepší možný tah je: {0}{1} -> {2}{3}\n", (char)( vybranyTah[ 1 ] + 'A' ), (char)( vybranyTah[ 0 ] + '1' ), (char)( vybranyTah[ 5 ] + 'A' ), (char)( vybranyTah[ 4 ] + '1' ) ), false );
                     potlacitChybu = true;
-                    return true;
+                    return false;
 
                 case UserCommunication.Command.Undo:
                     usCom.VypisZpravu( "Undo - vrátíte krok zpět", true );
