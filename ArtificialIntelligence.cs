@@ -6,8 +6,8 @@ namespace NARD_01
 {
     class ArtificialIntelligence
     {
-        private bool vypocetDokoncenPriv = false;                                   // <----- privátní atribut; ke čtení jen z venku (princip zapouzdření)
-        public bool vypocetDokoncen { get { return vypocetDokoncenPriv; } }
+        private bool VypocetDokoncenPriv = false;                                   // <----- privátní atribut; ke čtení jen z venku (princip zapouzdření)
+        public bool vypocetDokoncen { get { return VypocetDokoncenPriv; } }
 
         private int[] nejlepsiTahPriv = null;                                       // <----- privátní atribut; ke čtení jen z venku (princip zapouzdření)
         public int[] nejlepsiTah { get { return nejlepsiTahPriv; } }                // do tohoto ATRIBUTU( = nejlepsiTah ) bude vždy uložený výsledek
@@ -45,7 +45,7 @@ namespace NARD_01
         {
             VypocitejNejlepsiTahy();
             nejlepsiTahPriv = VyberNahodnyTah( seznamNejlepsichTahu );
-            vypocetDokoncenPriv = true;
+            VypocetDokoncenPriv = true;
         }
 
 
