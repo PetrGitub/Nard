@@ -6,7 +6,6 @@ namespace NARD_01
 {
     class Board
     {
-        //private int m = 7, n = 8;
         public int[,] hracideska = new int[ 7, 8 ];
         public List<int[]> SeznamTahu = new List<int[]>();
         private int indexSeznamuPriv = 0;                               // tzv. UKAZATEL ( privátní ), který ukazuje v historii na pozici, která se právě odehrála
