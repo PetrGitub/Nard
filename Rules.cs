@@ -36,7 +36,7 @@ namespace NARD_01
                         deska.hracideska[i, j] = 0;
                     }*/
                 }
-            }
+            }   
         }
 
         
@@ -112,8 +112,8 @@ namespace NARD_01
 
             for (int dir = 0; dir < 4; dir++)
             {
-                int nextToX = newCoordX + directions[ dir, 1 ];         // nextToX ...... x-ová souřadnice políčka, kde by mohla být figurka soupeře
-                int nextToY = newCoordY + directions[ dir, 0 ];         // nextToX ...... y-ová souřadnice políčka, kde by mohla být figurka soupeře
+                int nextToX = newCoordX + directions[ dir, 0 ];         // nextToX ...... x-ová souřadnice políčka, kde by mohla být figurka soupeře
+                int nextToY = newCoordY + directions[ dir, 1 ];         // nextToX ...... y-ová souřadnice políčka, kde by mohla být figurka soupeře
 
                 if ( !IsValidCoords(nextToX, nextToY) )           // KONTROLA, jestli souřadnice, kde by mohla stát soupeřova figurka, nejsou mimo desku
                     continue;   // continue = pokud je podmínka true = zastaví se proces a "for" se posune o +1 (pokračuje další iterace)
@@ -122,8 +122,8 @@ namespace NARD_01
                 if (possibleEnemy != (-kdoJeNaTahu))        // <----- pokud - kdo NENÍ na tahu(soupeř) NESTOJÍ na souřadnicích kam se koukám - pokračuju  !!!!! ještě jinak: pokud - se vedle mne nenachází nepřítel - jdu prohlédnout další směr !!!!!
                     continue;
 
-                int behindNextToX = nextToX + directions[ dir, 1 ];     // v proměnné "behindNextToX" je x-ová souřadnice figurky, která je AŽ ZA POZICÍ kde by mohl být soupeř (=až za "nextToX") => další figurka hráče na tahu
-                int behindNextToY = nextToY + directions[ dir, 0 ];     // v proměnné "behindNextToY" je y-ová souřadnice figurky, která je AŽ ZA POZICÍ kde by mohl být soupeř (=až za "nextToY") => další figurka hráče na tahu
+                int behindNextToX = nextToX + directions[ dir, 0 ];     // v proměnné "behindNextToX" je x-ová souřadnice figurky, která je AŽ ZA POZICÍ kde by mohl být soupeř (=až za "nextToX") => další figurka hráče na tahu
+                int behindNextToY = nextToY + directions[ dir, 1 ];     // v proměnné "behindNextToY" je y-ová souřadnice figurky, která je AŽ ZA POZICÍ kde by mohl být soupeř (=až za "nextToY") => další figurka hráče na tahu
 
                 // pokud je v tomto směru KONEC HRACÍ DESKY, prověřím, if jsem v ROHU, kde jsou další PODMÍNKY pro ZAJETÍ
                 if ( !IsValidCoords( behindNextToX, behindNextToY ) )     // KONTROLA, jestli souřadnice, kde by mohla stát moje další figurka, nejsou mimo desku
@@ -131,49 +131,49 @@ namespace NARD_01
                     // levý dolní roh
                     if ( nextToX == 0 && nextToY == 0 && dir == 0 )         // hledám soupeře na  ->  souřadnicích LEVÉHO DOLNÍHO rohu + hledám ve směru DOLEVA[dir == 0], ale ten směr je už mimo desku => koukneš se NAHORU 
                     {
-                        behindNextToX = nextToX + directions[ 1, 1 ];           //  <----- toto je x-ová souřadnice NAHORU
-                        behindNextToY = nextToY + directions[ 1, 0 ];           //  <----- toto je y-ová souřadnice NAHORU
+                        behindNextToX = nextToX + directions[ 1, 0 ];           //  <----- toto je x-ová souřadnice NAHORU
+                        behindNextToY = nextToY + directions[ 1, 1 ];           //  <----- toto je y-ová souřadnice NAHORU
                     }
-                    if ( nextToX == 0 && nextToY == 0 && dir == 3 )         // hledám soupeře na  ->  souřadnicích LEVÉHO DOLNÍHO rohu + hledám ve směru DOLŮ[dir == 3], ale ten směr je už mimo desku => koukneš se DOPRAVA
+                    else if ( nextToX == 0 && nextToY == 0 && dir == 3 )         // hledám soupeře na  ->  souřadnicích LEVÉHO DOLNÍHO rohu + hledám ve směru DOLŮ[dir == 3], ale ten směr je už mimo desku => koukneš se DOPRAVA
                     {
-                        behindNextToX = nextToX + directions[ 2, 1 ];           //  <----- toto je x-ová souřadnice DOPRAVA
-                        behindNextToY = nextToY + directions[ 2, 0 ];           //  <----- toto je y-ová souřadnice DOPRAVA
+                        behindNextToX = nextToX + directions[ 2, 0 ];           //  <----- toto je x-ová souřadnice DOPRAVA
+                        behindNextToY = nextToY + directions[ 2, 1 ];           //  <----- toto je y-ová souřadnice DOPRAVA
                     }
 
                     // pravý dolní roh
-                    if ( nextToX == 7 && nextToY == 0 && dir == 2 )          // hledám soupeře na  ->  souřadnicích PRAVÉHO DOLNÍHO rohu + hledám ve směru DO PRAVA[dir == 2], ale ten směr je už mimo desku => koukneš se NAHORU 
+                    else if ( nextToX == 0 && nextToY == 7 && dir == 2 )          // hledám soupeře na  ->  souřadnicích PRAVÉHO DOLNÍHO rohu + hledám ve směru DO PRAVA[dir == 2], ale ten směr je už mimo desku => koukneš se NAHORU 
                     {
-                        behindNextToX = nextToX + directions[ 1, 1 ];
-                        behindNextToY = nextToY + directions[ 1, 0 ];
+                        behindNextToX = nextToX + directions[ 1, 0 ];
+                        behindNextToY = nextToY + directions[ 1, 1 ];
                     }
-                    if( nextToX == 7 && nextToY == 0 && dir == 2 )          // hledám soupeře na  ->  souřadnicích PRAVÉHO DOLNÍHO rohu + hledám ve směru DOLŮ[dir == 3], ale ten směr je už mimo desku => koukneš se DOLEVA
+                    else if( nextToX == 0 && nextToY == 7 && dir == 2 )          // hledám soupeře na  ->  souřadnicích PRAVÉHO DOLNÍHO rohu + hledám ve směru DOLŮ[dir == 3], ale ten směr je už mimo desku => koukneš se DOLEVA
                     {
-                        behindNextToX = nextToX + directions[ 0, 1 ];
-                        behindNextToY = nextToY + directions[ 0, 0 ];
+                        behindNextToX = nextToX + directions[ 0, 0 ];
+                        behindNextToY = nextToY + directions[ 0, 1 ];
                     }
 
                     // pravý horní roh
-                    if ( nextToX == 7 && nextToY == 6 && dir == 2 )          // hledám soupeře na  ->  souřadnicích PRAVÉHO HORNÍHO rohu + hledám ve směru DO PRAVA[dir == 2], ale ten směr je už mimo desku => koukneš se DOLŮ 
+                    else if ( nextToX == 6 && nextToY == 7 && dir == 2 )          // hledám soupeře na  ->  souřadnicích PRAVÉHO HORNÍHO rohu + hledám ve směru DO PRAVA[dir == 2], ale ten směr je už mimo desku => koukneš se DOLŮ 
                     {
-                        behindNextToX = nextToX + directions[ 3, 1 ];
-                        behindNextToY = nextToY + directions[ 3, 0 ];
+                        behindNextToX = nextToX + directions[ 3, 0 ];
+                        behindNextToY = nextToY + directions[ 3, 1 ];
                     }
-                    if ( nextToX == 7 && nextToY == 6 && dir == 1 )           // hledám soupeře na  ->  souřadnicích PRAVÉHO HORNÍHO rohu + hledám ve směru NAHORU[dir == 1], ale ten směr je už mimo desku => koukneš se DOLEVA
+                    else if ( nextToX == 6 && nextToY == 7 && dir == 1 )           // hledám soupeře na  ->  souřadnicích PRAVÉHO HORNÍHO rohu + hledám ve směru NAHORU[dir == 1], ale ten směr je už mimo desku => koukneš se DOLEVA
                     {
-                        behindNextToX = nextToX + directions[ 0, 1 ];
-                        behindNextToY = nextToY + directions[ 0, 0 ];
+                        behindNextToX = nextToX + directions[ 0, 0 ];
+                        behindNextToY = nextToY + directions[ 0, 1 ];
                     }
 
                     // levý horní roh
-                    if ( nextToX == 0 && nextToY == 6 && dir == 0 )          // hledám soupeře na  ->  souřadnicích LEVÉHO HORNÍHO rohu + hledám ve směru DOLEVA[dir == 0], ale ten směr je už mimo desku => koukneš se DOLŮ 
+                    else if ( nextToX == 6 && nextToY == 0 && dir == 0 )          // hledám soupeře na  ->  souřadnicích LEVÉHO HORNÍHO rohu + hledám ve směru DOLEVA[dir == 0], ale ten směr je už mimo desku => koukneš se DOLŮ 
                     {
-                        behindNextToX = nextToX + directions[ 3, 1 ];
-                        behindNextToY = nextToY + directions[ 3, 0 ];
+                        behindNextToX = nextToX + directions[ 3, 0 ];
+                        behindNextToY = nextToY + directions[ 3, 1 ];
                     }
-                    if ( nextToX == 0 && nextToY == 6 && dir == 1 )           // hledám soupeře na  ->  souřadnicích LEVÉHO HORNÍHO rohu +  hledám ve směru NAHORU[dir == 1], ale ten směr je už mimo desku => koukneš se DO PRAVA
+                    else if ( nextToX == 6 && nextToY == 0 && dir == 1 )           // hledám soupeře na  ->  souřadnicích LEVÉHO HORNÍHO rohu +  hledám ve směru NAHORU[dir == 1], ale ten směr je už mimo desku => koukneš se DO PRAVA
                     {
-                        behindNextToX = nextToX + directions[ 2, 1 ];
-                        behindNextToY = nextToY + directions[ 2, 0 ];
+                        behindNextToX = nextToX + directions[ 2, 0 ];
+                        behindNextToY = nextToY + directions[ 2, 1 ];
                     }
                     else
                         continue;   // continue = pokud je podmínka true = zastaví se proces a "for" se posune o +1 (pokračuje další iterace)
