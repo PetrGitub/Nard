@@ -145,16 +145,17 @@ namespace NARD_01
                         {
                             return Command.Load;
                         }
-                        else if (zadaneSouradnice.Contains("player1"))     // .......... dovysvětlit ??????????
+                        else if (zadaneSouradnice.Contains("player1"))     
                         {
-                            try
-                            {
-                                int hodnota = int.Parse(zadaneSouradnice[8].ToString());
-                                if (hodnota < 0 || hodnota > 5)
+                            try         /*        Try ----- Catch blok          */          // <------- pokud během vykonávání  "TRY BLOKU"  dojde k jakékoliv chybě, tak se vypíše chyba, že byl špatně použitý příkaz...
+                            {                                                                           //  ...... Co může být za chyby?  ......  
+                                int hodnota = int.Parse(zadaneSouradnice[8].ToString());    //   ----->  "nemusí tam být žádné číslo". Dotazuji se na zadaneSouradnice[ 8 ], protože na indexu 8 očekávám číslici. Ale pokud žádnou nezadám, tak se dotazuju mimo pole. Try/catch blok to ošetří za nás
+                                                                                            //   ----->  "snažím se znak na pozici 8 parsovat na číslo int". Může tam být písmeno, mezera, nebo jiný znak - Try/catch opět vyřeší
+                                if (hodnota < 0 || hodnota > 5)                             //   ----->  pokud to převedu na číslo, porovnám, jestli není menší, než 0, nebo větší než 5. Pokud ano, pomocí  "throw"  vyvolám výjimku, kterou opět try/catch blok zachytí jako chybu.
                                     throw new Exception();
 
-                                souradnice = new int[] { 1, hodnota };
-                                return Command.SetPlayer;
+                                souradnice = new int[] { 1, hodnota };  // pokud je vše v pořádku, mám číslo v odpovídajícím rozsahu, tak ho uložím do pole. Na nulté pozici je index o kterého hráče se jedná (1, nebo 2) a na první pozici je hodnota nové inteligence.
+                                return Command.SetPlayer;               // ...... return - vrátíme příkaz SetPlayer
                             }
                             catch
                             {
@@ -178,7 +179,7 @@ namespace NARD_01
                                 Console.WriteLine("Chybně zadaný příkaz pro nastavení hráče. Použij \"player2 [hodnota]\" - např. \"player2 0\"");
                                 continue;
                             }
-                        }       // .....dovysvětlit
+                        }       
                     }
                 }
      
@@ -215,14 +216,41 @@ namespace NARD_01
 
 
 
-        public void VypisZpravu( string anyMessage, bool cekaNaVstup )
+        public void VypisZpravu( string anyMessage, bool cekaNaVstup, ConsoleColor clr )
         {
-            Console.WriteLine(anyMessage);
+            ConsoleColor tmp = Console.ForegroundColor;         // původní barva písma (=clr) se vloží do přechodné proměnné (=tmp)
+            Console.ForegroundColor = clr;                      // nastaví se nová barva písma
+
+            Console.WriteLine( anyMessage );
             if  ( cekaNaVstup )
             {
                 Console.WriteLine( "Stiskni ENTER" );
                 Console.ReadLine();                 // musí to tady být - jinak se hned v dalším kroku vymaže konzole a vykresli nový Board a vlastně není vidět žádná provedená akce
             }
+
+            Console.ForegroundColor = tmp;                      // vrátí se původní barva písma
+        }
+
+
+
+        // nastavení hráče, PC
+        public int GetPlayerSettings( string anyMessage )       //  <-  metoda, která čte vstup a vrací chyby, pokud přijde něco jiného, než 0..4
+        {
+            Console.Write ( anyMessage );                       // přečte se zpráva o tom, jakými hodnotami se nastavuje hráč a PC ......
+            string input = Console.ReadLine();                  // ...... tady se načte číselná hodnota, která byla vložena (Pozor! je to číslo, ale bylo vloženo jako STRING)
+            int value;
+            try
+            {
+                value = int.Parse( input );                     // vložené číslo se "přeparsuje" na INTEGER
+            }
+            catch
+            {
+                return -1;
+            }
+            if ( value < 0 || value > 4 )
+                return -1;
+
+            return value;                                       // vrací správně vloženou hodnotu
         }
 
 
