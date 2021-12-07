@@ -11,7 +11,7 @@ namespace NARD_01
         public UserCommunication usCom;
         public int hracNaTahu = 1;           // argument pro Game( ........ ), r39
         public int inteligenceBileho = 0;        // nastavení hráče -----> 0.....hraje člověk, > 0 hraje PC, podle toho jak bude číslo daleko od 0 se bude zvedat inteligence
-        public int inteligenceCerneho = 1;        // nastavení hráče
+        public int inteligenceCerneho = 0;        // nastavení hráče
         
         public Rules gameRules;
         public ArtificialIntelligence brain;
@@ -34,11 +34,35 @@ namespace NARD_01
 
         public void Game()
         {
+            // volba nastavení hráče na tahu
+            usCom.VypisZpravu( "Nastavení hráčů. Zadej 0 pro hráče, nebo 1..4 jako hodnotu inteligence PC", false, ConsoleColor.Green );
+            inteligenceBileho = -1;
+            while ( inteligenceBileho == -1 )
+            {
+                inteligenceBileho = usCom.GetPlayerSettings( "Nastav bílého hráče \"x\": " );
+                if ( inteligenceBileho == -1 )
+                {
+                    usCom.VypisZpravu( "Nesprávně nastavená hodnota!", false, ConsoleColor.Red );
+                }
+            }
+
+            inteligenceCerneho = -1;
+            while ( inteligenceCerneho == -1 )
+            {
+                inteligenceCerneho = usCom.GetPlayerSettings( "Nastav černého hráče \"o\": " );
+                if ( inteligenceCerneho == -1 )
+                {
+                    usCom.VypisZpravu( "Nesprávně nastavená hodnota!", false, ConsoleColor.Red );
+                }
+            }
+
+
+
             while ( !gameRules.IsGameFinished(Nard) )
             {
                 usCom.ConsoleClear();
-                usCom.VypisBoard(Nard);
-                usCom.VypisZpravu(vypisTahu, false);        // "false" -> protože tady není žádoucí čekat na Enter (=UserCommunication-VypisZpravu-bool cekaNaVstup)  +  "vypisTahu -> MainController-ProvedTah-VypisTahu
+                usCom.VypisBoard( Nard );
+                usCom.VypisZpravu( vypisTahu, false, ConsoleColor.Yellow );        // "false" -> protože tady není žádoucí čekat na Enter (=UserCommunication-VypisZpravu-bool cekaNaVstup)  +  "vypisTahu -> MainController-ProvedTah-VypisTahu
 
                 if ( (hracNaTahu == 1 && inteligenceBileho > 0) || (hracNaTahu == -1 && inteligenceCerneho > 0) )  // inteligence1,2 > 0 ....... hraje PC
                 {
@@ -46,7 +70,7 @@ namespace NARD_01
 
                     brain = new ArtificialIntelligence( Nard, hracNaTahu > 0 ? inteligenceBileho : inteligenceCerneho, hracNaTahu );    // <= pokud je na řade s tahem počítač, vytvoří se nová instance "brain", kde se nastaví inteligence podle toho, jak je daný hráč nastaven.....
                     brain.VypocitejNejlepsiTah();                                                                                       // ..... spustí se výpočet a výsledek se provede
-                    int[] vybranyTah = brain.nejlepsiTah;
+                    int[] vybranyTah = brain.NejlepsiTah;
 
                     Nard.VykonejTah(vybranyTah);                                     // vykonam na šachovnici ten ------> vybrany tah    
 
@@ -60,11 +84,11 @@ namespace NARD_01
                 else
                 {
                     bool provedenTah;
-                    while ( !UzivatelskeVolby(out provedenTah, out bool potlacitChybu) )               // pokud plati NEGACE TRUE, tzn. nastává false, vypíše se zpráva    // ...... DOVYSVĚTLIT !!!!!!!!!!!!
+                    while ( !UzivatelskeVolby( out provedenTah, out bool potlacitChybu ) )               // pokud plati NEGACE TRUE, tzn. nastává false, vypíše se zpráva    // ...... DOVYSVĚTLIT !!!!!!!!!!!!
                     {
                         if ( !potlacitChybu )
                         {
-                            usCom.VypisZpravu("  ------->   Error - Tah neni platny ", false);      // "false" -> protože tady není žádoucí čekat na Enter (=UserCommunication-VypisZpravu-bool cekaNaVstup), .....
+                            usCom.VypisZpravu( "  ------->   Error - Tah neni platny ", false, ConsoleColor.Red );      // "false" -> protože tady není žádoucí čekat na Enter (=UserCommunication-VypisZpravu-bool cekaNaVstup), .....
                                                                                                     // .....aby se provedl další krok, tady chci rovnou vypsat tu zprávu  
                         }
                     }                                                                           
@@ -78,14 +102,14 @@ namespace NARD_01
             Nard.PocetFigur(out int pocetBilych, out int pocetCernych);
             if (pocetBilych > pocetCernych)
             {
-                usCom.VypisZpravu("Hra skončila. Vyhrál BÍLÝ hráč.", true);
+                usCom.VypisZpravu( "Hra skončila. Vyhrál BÍLÝ hráč.", true, ConsoleColor.Green );
             }
             else if (pocetCernych > pocetBilych)
             {
-                usCom.VypisZpravu("Hra skončila. Vyhrál ČERNÝ hráč.", true);
+                usCom.VypisZpravu( "Hra skončila. Vyhrál ČERNÝ hráč.", true, ConsoleColor.Green );
             }
             else
-                usCom.VypisZpravu( "Hra skončila remízou.", true );
+                usCom.VypisZpravu( "Hra skončila remízou.", true, ConsoleColor.Green );
         }
 
 
@@ -104,33 +128,53 @@ namespace NARD_01
                     return provedenTah;
 
                 case UserCommunication.Command.GeneralHelp:
-                    usCom.VypisZpravu( "\n Zadán požadavek o nápovědu všech tahů", false );     // ....... DOVYSVĚTLIT CELÉ !!!!!!!!!!!!!!!!!
+                    usCom.VypisZpravu( "\n Zadán požadavek o nápovědu všech tahů", false, ConsoleColor.Green );     // ....... DOVYSVĚTLIT CELÉ !!!!!!!!!!!!!!!!!
 
                     brain = new ArtificialIntelligence( Nard, 5, hracNaTahu );
                     brain.VypocitejNejlepsiTah();
-                    int[] vybranyTah = brain.nejlepsiTah;
-                    usCom.VypisZpravu(string.Format("    Nejlepší možný tah je: {0}{1} -> {2}{3}\n", (char)( vybranyTah[ 1 ] + 'A' ), (char)( vybranyTah[ 0 ] + '1' ), (char)( vybranyTah[ 5 ] + 'A' ), (char)( vybranyTah[ 4 ] + '1' ) ), false );
+                    int[] vybranyTah = brain.NejlepsiTah;
+                    usCom.VypisZpravu(string.Format("    Nejlepší možný tah je: {0}{1} -> {2}{3}\n", (char)( vybranyTah[ 1 ] + 'A' ), (char)( vybranyTah[ 0 ] + '1' ), (char)( vybranyTah[ 5 ] + 'A' ), (char)( vybranyTah[ 4 ] + '1' ) ), false, ConsoleColor.Green );
                     potlacitChybu = true;
                     return false;
 
                 case UserCommunication.Command.Undo:
-                    usCom.VypisZpravu( "Undo - vrátíte krok zpět", true );
-                    return true;
+                {
+                    bool proveden = Nard.TahZpet();
+                    potlacitChybu = true;
+                    if ( proveden )
+                    {
+                        vypisTahu = "Proveden tah zpět";
+                        provedenTah = true;
+                    }
+                    else
+                        usCom.VypisZpravu( "Již nelze provádět tahy vpřed. Jsme na začátku hry.", false, ConsoleColor.Red );
+                    return proveden;
+                }
 
                 case UserCommunication.Command.Redo:
-                    usCom.VypisZpravu( "Redo - Posunete se o krok vpřed", true );
-                    return true;
+                {
+                    bool proveden = Nard.TahVpred();
+                    potlacitChybu = true;
+                    if (proveden)
+                    {
+                        vypisTahu = "Proveden tah vpřed";
+                        provedenTah = true;
+                    }
+                    else
+                        usCom.VypisZpravu( "Již nelze provádět tahy vpřed. Jsme na začátku hry.", false, ConsoleColor.Red );
+                    return proveden;
+                }
 
                 case UserCommunication.Command.Load:
-                    usCom.VypisZpravu( "Nahrát uložený stav - LOAD", true );
+                    usCom.VypisZpravu( "Nahrát uložený stav - LOAD", true, ConsoleColor.Green );
                     return true;
                      
                 case UserCommunication.Command.Save:
-                    usCom.VypisZpravu( "Uložit aktuální stav - SAVE", true );
+                    usCom.VypisZpravu( "Uložit aktuální stav - SAVE", true, ConsoleColor.Green );
                     return true;
 
                 case UserCommunication.Command.SetPlayer:                   // .......... DOVYSVĚTLIT !!!!!!!!!
-                    usCom.VypisZpravu( string.Format( "Změna nastavení {0} hráče na hodnotu {1}", Tah[0] == 1 ? "bílého" : "černého", Tah[1] ), true );
+                    usCom.VypisZpravu( string.Format( "Změna nastavení {0} hráče na hodnotu {1}", Tah[0] == 1 ? "bílého" : "černého", Tah[1] ), true, ConsoleColor.Green );
                     switch( Tah[ 0 ])
                     {
                         case 1:
