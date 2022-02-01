@@ -9,7 +9,7 @@ namespace NARD_01
         public int[,] hracideska = new int[ 7, 8 ];
         public List<int[]> SeznamTahu = new List<int[]>();
         private int indexSeznamuPriv = 0;                               // tzv. UKAZATEL ( privátní ), který ukazuje v historii na pozici, která se právě odehrála
-        public int indexSeznamu { get { return indexSeznamuPriv; } }    // UKAZATEL ( veřejný ), obsahuje public GETTER => tzn., že je k němu přístup ZVENKU, ale jen ke ČTENÍ;  vrací hodnotu privátní proměnné _ indexSeznamuPriv
+        public int IndexSeznamu { get { return indexSeznamuPriv; } }    // UKAZATEL ( veřejný ), obsahuje public GETTER => tzn., že je k němu přístup ZVENKU, ale jen ke ČTENÍ;  vrací hodnotu privátní proměnné _ indexSeznamuPriv
 
 
 
