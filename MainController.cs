@@ -66,7 +66,7 @@ namespace NARD_01
 
                 if ( (hracNaTahu == 1 && inteligenceBileho > 0) || (hracNaTahu == -1 && inteligenceCerneho > 0) )  // inteligence1,2 > 0 ....... hraje PC
                 {
-                    Thread.Sleep( 300 );                    // časová prodleva před tahem počítače, aby tahy nebyly moc rychlé
+                    Thread.Sleep( 500 );                    // časová prodleva před tahem počítače, aby tahy nebyly moc rychlé
 
                     brain = new ArtificialIntelligence( Nard, hracNaTahu > 0 ? inteligenceBileho : inteligenceCerneho, hracNaTahu );    // <= pokud je na řade s tahem počítač, vytvoří se nová instance "brain", kde se nastaví inteligence podle toho, jak je daný hráč nastaven.....
                     brain.VypocitejNejlepsiTah();                                                                                       // ..... spustí se výpočet a výsledek se provede
