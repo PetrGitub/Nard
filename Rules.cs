@@ -86,8 +86,8 @@ namespace NARD_01
             
             for (int dir = 0; dir < 4; dir++)   //procházení 4 směrů ve smyčce ----->   smyčka nastaví hodnoty "x" a "y" ve 4 směrech = doleva, nahoru, doprava, dolu
             {       // toX = x-ová souřadnice pole kam kráčím
-                int toX = coordX + directions[ dir, 1 ];   // v proměnné "coordX" je x-ová souřadnice figurky;  dir=index směru (např: dir=0 -> {-1,0});  0 a 1=indexy souřadnic v těch směrech, tzn. => directions[{-1,0},0] ta druhá 0 říká, ......
-                int toY = coordY + directions[ dir, 0 ];   // v proměnné "coordY" je y-ová souřadnice figurk-1,0y,0                                                               .......... že si z té závorky vyberu čísli na indexu 0, což je -1
+                int toX = coordX + directions[ dir, 0 ];   // v proměnné "coordX" je x-ová souřadnice figurky;  dir=index směru (např: dir=0 -> {-1,0});  0 a 1=indexy souřadnic v těch směrech, tzn. => directions[{-1,0},0] ta druhá 0 říká, ......
+                int toY = coordY + directions[ dir, 1 ];   // v proměnné "coordY" je y-ová souřadnice figurk-1,0y,0                                                               .......... že si z té závorky vyberu čísli na indexu 0, což je -1
 
                 if ( !IsValidCoords(toX, toY) )         // KONTROLA, jestli souřadnice, kam můžu jít nejsou mimo desku
                     continue;   // continue = pokud je podmínka true = zastaví se proces a "for" se posune o +1 (pokračuje další iterace)
