@@ -10,14 +10,16 @@ namespace NARD_01
         public Board Nard;                      // mám proměnnou Nard typu Board a ta ukazuje na tridu Board, kdyz vytvorim nejaky objekt te tridy, tak on bude umět vše, co je popsané ve třídě Board
         public UserCommunication usCom;
         public int hracNaTahu = 1;           // argument pro Game( ........ ), r39
-        public int inteligenceBileho = 0;        // nastavení hráče -----> 0.....hraje člověk, > 0 hraje PC, podle toho jak bude číslo daleko od 0 se bude zvedat inteligence
-        public int inteligenceCerneho = 0;        // nastavení hráče
+        public int inteligenceBileho = 0;       // nastavení hráče -----> 0.....hraje člověk, > 0 hraje PC, podle toho jak bude číslo daleko od 0 se bude zvedat inteligence
+        public int inteligenceCerneho = 0;      // nastavení hráče
         
         public Rules gameRules;
         public ArtificialIntelligence brain;
 
         public string vypisTahu = "";           // vypíše provedený tah;  "" jsou tam proto, aby se vypsal (Vytvoří se jen prázdné místo) hned při prvním průchodu, kdy ještě žádný tah není
         // private int hloubka;                    // bude potřeba nejdříve se dotázat na hloubku, aby se nevkládala na začátku 0
+
+        private Files files = new Files();      // <- instance třídy "Files"
 
 
         public MainController()
@@ -166,11 +168,24 @@ namespace NARD_01
                 }
 
                 case UserCommunication.Command.Load:
-                    usCom.VypisZpravu( "Nahrát uložený stav - LOAD", true, ConsoleColor.Green );
+                    if ( files.LoadGame( "default.xml", out Board newBoard, out int newPlayerOnMove, out int player1, out int player2 ) )      // přidáno použití této metody, která je vytvořena ve Files.cs
+                    {
+                        Nard = newBoard;
+                        hracNaTahu = newPlayerOnMove;
+                        inteligenceBileho = player1;
+                        inteligenceCerneho = player2;
+
+                        usCom.VypisZpravu( "Hra byla načtena", true, ConsoleColor.Green );  // tato zpráva se vypíše po:  1.načtení Desky, 2.načtení Hráče na TAHU, 3.-4. načtení KDO hraje za Bílé a za Černé
+                    }
+                    else
+                        usCom.VypisZpravu( "Uloženou hru se nepodařilo načíst", true, ConsoleColor.Red );
                     return true;
                      
                 case UserCommunication.Command.Save:
-                    usCom.VypisZpravu( "Uložit aktuální stav - SAVE", true, ConsoleColor.Green );
+                    if ( files.SaveGame( "default.xml", Nard ) )                                                                                // přidáno použití této metody
+                        usCom.VypisZpravu( "Hra byla uložena", true, ConsoleColor.Green );
+                    else
+                        usCom.VypisZpravu( "Hru se nepodařilo uložit", true, ConsoleColor.Red );
                     return true;
 
                 case UserCommunication.Command.SetPlayer:                   // .......... DOVYSVĚTLIT !!!!!!!!!
