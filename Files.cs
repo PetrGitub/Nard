@@ -19,35 +19,38 @@ namespace NARD_01
 
 
 
-        public bool SaveGame( string fileName, Board board )        // metoda pro uložení hry  ( musím zadat jméno souboru, do kterého hru uložím a název šachovnice )
+        public bool SaveGame( string fileName, Board board, int player1settings, int player2settings)        // metoda pro uložení hry  ( musím zadat jméno souboru, do kterého hru uložím a název šachovnice )
         {
-            if (fileName == null)           // není zadán název souboru, do kterého uložím hru => vrátí chybu
+			if (fileName == null)           // není zadán název souboru, do kterého uložím hru => vrátí chybu
                 return false;
 
             XmlDocument document = new XmlDocument();                                               // <- instance XmlDocument
             XmlDeclaration declaration = document.CreateXmlDeclaration( "1.0", "utf-8", null );     // HLAVIČKA  <- vytvořeno pomocí  "metody CreateXmlDeclaration()"  na instanci  "XmlDocument" (= document)
             document.AppendChild( declaration );                                                    // <- vrátí se mi uzel, který do dokumentu (=document) přidám pomocí  "metody AppendChild()"
-            XmlElement root = document.CreateElement( "Nard" );                                     // vytvoření kořenového elementu
+            XmlElement root = document.CreateElement( "Nard" );					// vytvoření kořenového elementu  ==>   <Nard>
 
 
 
 
-			XmlElement players = document.CreateElement("Players");
-			players.SetAttribute("Player1", "0");
-			players.SetAttribute("Player2", "0");
+			XmlElement players = document.CreateElement("Players");             // vytvoření kořenového elementu  ==>   <Players>
+			players.SetAttribute( "Player1", player1settings.ToString() );
+			players.SetAttribute( "Player2", player2settings.ToString() );
 
 			root.AppendChild(players);
 
-			XmlElement moves = document.CreateElement("Moves");
+
+
+
+			XmlElement moves = document.CreateElement("Moves");                 // vytvoření kořenového elementu  ==>   <Moves>
 			moves.SetAttribute("Pointer", (board.IndexSeznamu).ToString());
 			foreach (int[] tahZeSeznamu in board.SeznamTahu)
 			{
 				XmlElement oneMove = document.CreateElement("OneMove");
 
-				oneMove.SetAttribute("FromX", tahZeSeznamu[0].ToString());
-				oneMove.SetAttribute("FromY", tahZeSeznamu[1].ToString());
-				oneMove.SetAttribute("ToX", tahZeSeznamu[4].ToString());
-				oneMove.SetAttribute("ToY", tahZeSeznamu[5].ToString());
+				oneMove.SetAttribute( "FromX", tahZeSeznamu[0].ToString() );
+				oneMove.SetAttribute( "FromY", tahZeSeznamu[1].ToString() );
+				oneMove.SetAttribute( "ToX", tahZeSeznamu[4].ToString() );
+				oneMove.SetAttribute( "ToY", tahZeSeznamu[5].ToString() );
 
 				moves.AppendChild(oneMove);
 			}
