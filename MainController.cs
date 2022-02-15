@@ -182,8 +182,11 @@ namespace NARD_01
                     return true;
                      
                 case UserCommunication.Command.Save:
-                    if ( files.SaveGame( "default.xml", Nard ) )                                                                                // přidáno použití této metody
-                        usCom.VypisZpravu( "Hra byla uložena", true, ConsoleColor.Green );
+                    if ( files.SaveGame( "default.xml", Nard, inteligenceBileho, inteligenceCerneho ) )           // přidáno použití této metody
+                    {
+                        //inteligenceBileho = player1;
+                        usCom.VypisZpravu("Hra byla uložena", true, ConsoleColor.Green);
+                    }
                     else
                         usCom.VypisZpravu( "Hru se nepodařilo uložit", true, ConsoleColor.Red );
                     return true;
