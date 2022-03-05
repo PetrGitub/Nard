@@ -22,6 +22,8 @@ namespace NARD_01
         private const int MAX = 100;
         private const int MANY = 90;
 
+        private bool cancelRequested = false;                                       // <=  proměnná, která reprezentuje informaci (údaj) o tom, že bylo žádáno ZRUŠENÍ VÝPOČTU
+
 
 
         /// <summary>
@@ -41,11 +43,34 @@ namespace NARD_01
 
 
 
+        public void Cancel()                            // <=  metoda Thread safe  -  slouží ke ZRUŠENÍ VÝPOČTU
+        {
+            lock( this )
+            {
+                cancelRequested = true;
+            }
+        }
+
+        private bool IsCanceled()                       // <=  metoda Thread safe  -  zjišťuje, if BYLO POŽÁDÁNO O ZRUŠENÍ VÝPOČTU
+        {
+            bool result;
+            lock( this )
+            {
+                result = cancelRequested;
+            }
+            return result;
+        }
+
+
+
         public void VypocitejNejlepsiTah()
         {
             VypocitejNejlepsiTahy();
-            nejlepsiTahPriv = VyberNahodnyTah( seznamNejlepsichTahu );
-            vypocetDokoncenPriv = true;
+            if ( !IsCanceled() )        // podmínka  => pokud NEBYLO požádáno o zrušení tahu, pokračuj ve výběru nejlepšího tahu
+            {                           // podmínka  => pokud BYLO žádáno o zrušení výpočtu(= výpočet se přeruší), tak se nesnaží o náhodný výběr z vypočítaných tahů, ani nenastaví informaci, že byl výpočet dokončen
+                nejlepsiTahPriv = VyberNahodnyTah(seznamNejlepsichTahu);
+                vypocetDokoncenPriv = true;
+            }  
         }
 
 
@@ -101,8 +126,11 @@ namespace NARD_01
         /// </summary>
         /// <param name="hloubka"></param>
         /// <returns> Bude se sama volat, dokud nedojde do konce hry, nebo do požadované hloubky</returns>
-        private int Minimax( int hloubka)
+        private int Minimax( int hloubka )
         {
+            if ( IsCanceled())          // podmínka  => pokud BYLO žádáno o zrušení výpočtu(= výpočet se přeruší)
+                return 0;                            // ..... takový požadavek může přijít ve chvíli, kdy bude problémek v nějakém cyklu a nejpravděpodobněji v tom rekurzivním minimax. Návratová hodnota není důležitá, protože se k ničemu nepoužije, tak jsem zvolil "return 0"
+
             // Ohodnocení, výhra, prohra, remíza
             if ( rules.IsGameFinished( nardAI ) )           // hra končí když: 1.počet tahů bez zajmutí figurky = 30  nebo  2.jeden z hráčů má 1 nebo žádnou figurku
             {
@@ -144,9 +172,9 @@ namespace NARD_01
                 nardAI.TahZpet();
                 hracNaTahuAI *= -1;                                     // v minimaxu prováděny tahy tam a zpět, takže opět změna hráče na tahu
             }
-            if (oneMoveValue > MANY)
+            if ( oneMoveValue > MANY )
                 oneMoveValue -= 1;
-            if (oneMoveValue < MANY)
+            if ( oneMoveValue < MANY )
                 oneMoveValue += 1;
 
             return oneMoveValue;
