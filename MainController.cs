@@ -21,6 +21,8 @@ namespace NARD_01
 
         private Files files = new Files();      // <- instance třídy "Files"
 
+        private Thread bestMoveCountTask;       // <=  proměnná, do které se bude ukládat SEPARÁTNÍ VLÁKNO
+
 
         public MainController()
         {
@@ -71,7 +73,16 @@ namespace NARD_01
                     Thread.Sleep( 300 );                    // časová prodleva před tahem počítače, aby tahy nebyly moc rychlé
 
                     brain = new ArtificialIntelligence( Nard, hracNaTahu > 0 ? inteligenceBileho : inteligenceCerneho, hracNaTahu );    // <= pokud je na řade s tahem počítač, vytvoří se nová instance "brain", kde se nastaví inteligence podle toho, jak je daný hráč nastaven.....
-                    brain.VypocitejNejlepsiTah();                                                                                       // ..... spustí se výpočet a výsledek se provede
+                    bestMoveCountTask = new Thread( brain.VypocitejNejlepsiTah );                           // ..... spustí se výpočet a výsledek se provede a SEPARÁTNÍ VLÁKNO se uloží do proměnné  ->  "bestMoveCountTask"
+                    bestMoveCountTask.Start();
+
+                    Console.Write( "\n" );
+                    while ( bestMoveCountTask.IsAlive )
+                    {
+                        Console.Write( "." );                                       // během trvání výpočtu se budou vypisovat tečky (do console)
+                    }
+                    Console.Write( "\n" );
+
                     int[] vybranyTah = brain.NejlepsiTah;
 
                     Nard.VykonejTah(vybranyTah);                                     // vykonam na šachovnici ten ------> vybrany tah    
@@ -181,8 +192,8 @@ namespace NARD_01
                         usCom.VypisZpravu( "Uloženou hru se nepodařilo načíst", true, ConsoleColor.Red );
                     return true;
                      
-                case UserCommunication.Command.Save:
-                    if ( files.SaveGame( "default.xml", Nard, inteligenceBileho, inteligenceCerneho ) )           // přidáno použití této metody
+                case UserCommunication.Command.Save:            // tady níž == proměnné, ve kterých je uchované to nastavení hráčů [ inteligenceBileho, inteligenceCerneho ]
+                    if ( files.SaveGame( "default.xml", Nard, inteligenceBileho, inteligenceCerneho ) )           // přidáno použití této metody  
                     {
                         //inteligenceBileho = player1;
                         usCom.VypisZpravu("Hra byla uložena", true, ConsoleColor.Green);
